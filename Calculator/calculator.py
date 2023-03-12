@@ -135,6 +135,5 @@ bequal.grid(row=3, column=2)
 bclear = Button(window, text="clear", height=4, width=9, font=35,
                                        command=clear)
 bclear.pack()
-
-
+test ="yes"
 window.mainloop()
