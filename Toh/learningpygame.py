@@ -13,8 +13,15 @@ clock = pygame.time.Clock()
 test_font = pygame.font.Font(None, 50)
 
 bg = pygame.image.load('graphics/bg.png')
+
 text = test_font.render('Pygame', False, 'Black')
-pole = pygame.image.load(graphics/pole.png)
+
+poro = pygame.image.load('graphics/poro.png')
+poro = pygame.transform.scale(poro, (175,100))
+
+#initial position of the poro
+poro_x_pos = 600
+
 
 '''
 test_surface1 = pygame.Surface((150,50))
@@ -27,6 +34,8 @@ test_surface3 = pygame.Surface((150,50))
 test_surface3.fill('Green')'''
 
 
+
+
 while True:
     screen.fill((0,0,255))
     for event in pygame.event.get():
@@ -36,6 +45,8 @@ while True:
 
     screen.blit(bg,(0,0))
     screen.blit(text, (300,50))
+    poro_x_pos +=1
+    screen.blit(poro, (poro_x_pos, 200))
 
     '''screen.blit(test_surface1, (200,100))
     screen.blit(test_surface2, (300,300))
