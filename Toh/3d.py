@@ -1,10 +1,10 @@
-import pygame
+import learningpygame
 import numpy as np
 
 WINDOW_SIZE = 800
 
-window = pygame.display.set_mode( (WINDOW_SIZE, WINDOW_SIZE) )
-clock = pygame.time.Clock()
+window = learningpygame.display.set_mode( (WINDOW_SIZE, WINDOW_SIZE) )
+clock = learningpygame.time.Clock()
 
 project_matrix = np.array([[1,0,0],[0,1,0],[0,0,0]])
 
@@ -40,13 +40,13 @@ while True:
         x = (point_2d[0][0] * scale) * WINDOW_SIZE/2
         y = (point_2d[1][0] * scale) * WINDOW_SIZE/2
 
-        pygame.draw.circle(window, (255,0 ,0), (x,y), 5)
+        learningpygame.draw.circle(window, (255,0 ,0), (x,y), 5)
         # first input = colour, second input = position, third input = size
 
 
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            pygame.quit()
+    for event in learningpygame.event.get():
+        if event.type == learningpygame.QUIT:
+            learningpygame.quit()
 
-    pygame.display.update()
+    learningpygame.display.update()
 

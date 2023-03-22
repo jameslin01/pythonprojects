@@ -1,5 +1,5 @@
 import sys
-import random, pygame, os
+import random, learningpygame, os
 
 def make_sierpinski(depth, triangle, triangle_list):
     '''
@@ -46,7 +46,7 @@ def draw_sierpinski(depth=6):
     master_triangle = ((50,800),(850,800),(450,62))
     min_depth, max_depth = 1, 10
     speed_factor = 4
-    clock = pygame.time.Clock()
+    clock = learningpygame.time.Clock()
     warning = "Depth must be an integer in the interval [1,10]"
 
     if depth < min_depth: 
@@ -66,17 +66,17 @@ def draw_sierpinski(depth=6):
     make_sierpinski(depth,master_triangle,triangle_list)
 
     # Initialise pygame and the screen display object and title
-    pygame.init()
-    screen = pygame.display.set_mode(dimensions)
+    learningpygame.init()
+    screen = learningpygame.display.set_mode(dimensions)
     # Put the title and instructions for the animation in the title bar of the animation.
     caption = 'Sierpinski Triangle            '
     caption += '(1)  \'Space\' to start or pause    '
     caption += '(2)  Further keystroke instruction here?'
-    pygame.display.set_caption(caption)
+    learningpygame.display.set_caption(caption)
 
     # Initialise the display 
     screen.fill(backgroundColour)
-    pygame.display.flip()
+    learningpygame.display.flip()
 
     # Total number of triangles to be drawn 
     number_of_triangles = len(triangle_list)
@@ -86,25 +86,25 @@ def draw_sierpinski(depth=6):
 
     # Animation loop 
     while keep_running:
-        for event in pygame.event.get():
+        for event in learningpygame.event.get():
             # Exit (at end of this iteration) using quit (e.g Ctrl-q or red button)
-            if event.type == pygame.QUIT:
+            if event.type == learningpygame.QUIT:
                 keep_running = False
             # Start and pause the animation with the space key 
-            elif event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+            elif event.type == learningpygame.KEYDOWN and event.key == learningpygame.K_SPACE:
                 draw_triangle  = not draw_triangle 
 
         # Keep draw next triangle with index 'index' if not told to pause and not complete
         if draw_triangle and index  < number_of_triangles:
-            pygame.draw.polygon(screen, black, triangle_list[index], 1)
+            learningpygame.draw.polygon(screen, black, triangle_list[index], 1)
             # Now update so that latest triangle is added 
-            pygame.display.update()
+            learningpygame.display.update()
             # Pause time before next iteration starts: one clock tick  
             clock.tick(frames_per_second)
             # Index uptate: index walks through triangle_list indices
             index += 1
             
-    pygame.quit()
+    learningpygame.quit()
     return None
 
 draw_sierpinski(5)
