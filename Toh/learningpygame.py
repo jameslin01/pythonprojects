@@ -1,13 +1,44 @@
 import pygame
 import sys
+from random import randint
 
-# def display_score():
-#     current_time = pygame.time.get_ticks()
-#     score_surf = test_font.render(current_time, False, (64,64,64))
-#     score_rect = score_surf.get_rect(center = (400,50))
-#     print(current_time)
+def display_score():
+    global current_time
+    # pygame.time.get_ticks() - start_time resets the time when game restarts
 
+    current_time = int(pygame.time.get_ticks() / 1000) - start_time
+    score_surf = test_font.render('Score: ' + f'{current_time}', False, (64,64,64))
+    score_rect = score_surf.get_rect(center = (400,50))
+    screen.blit(score_surf, score_rect)
+    return current_time
 
+def display_intro():
+
+    score_surf = test_font.render('Score: ' + f'{score}', False, (64,64,64))
+    score_rect = score_surf.get_rect(center = (400,350))
+    screen.blit(score_surf, score_rect)
+
+    game_title = test_font.render('Stickman Jump', False, (64,64,64))
+    game_title_rect = game_title.get_rect(center = (400,50))
+    screen.blit(game_title, game_title_rect)
+
+    instructions = test_font.render('Press Spacebar to play', False, (64,64,64))
+    instructions_rect = instructions.get_rect(center = (400, 300))
+    screen.blit(instructions, instructions_rect)
+
+def obstacle_movement(obstacle_list):
+    if obstacle_list:
+       
+       for obstacle_rect in obstacle_list:
+            obstacle_rect.x -= 5
+
+            screen.blit(poro_surf, obstacle_rect)
+        
+       obstacle_list = [obstacle for obstacle in obstacle_list if obstacle.x > -100]
+
+       return obstacle_list
+    else: 
+        return []
 
 # Basic setup
 
@@ -16,24 +47,32 @@ screen = pygame.display.set_mode((800,400))
 
 # Sets title of the window
 
-pygame.display.set_caption('Pygame')
+# pygame.display.set_caption('Pygame')
 
 # Setting the framerate
 
 clock = pygame.time.Clock()
 test_font = pygame.font.Font(None, 50)
-game_active = True
+game_active = False
+start_time = 0
+score = 0
 
 bg = pygame.image.load('graphics/bg.png').convert()
 
 # Score surface
 
-score_surf = test_font.render('Pygame', False, (64,64,64))
-score_rect = score_surf.get_rect(center = (400,50))
+# score_surf = test_font.render('Pygame', False, (64,64,64))
+# score_rect = score_surf.get_rect(center = (400,50))
+
+# Obstacles
 
 poro = pygame.image.load('graphics/poro.png').convert_alpha()
 poro_surf = pygame.transform.scale(poro, (175,100)).convert_alpha()
 poro_rect = poro_surf.get_rect(bottomright = (600,300))
+
+obstacle_rect_list = []
+
+
 
 player = pygame.image.load('graphics/player.png').convert_alpha()
 player_surf = pygame.transform.scale(player, (75,150)).convert_alpha()
@@ -42,13 +81,26 @@ player_rect = player_surf.get_rect(midbottom = (80,300))
 # Player is at ground
 player_gravity = 0
 
+# Intro screen
+
+player_stand = pygame.image.load('graphics/player.png').convert_alpha()
+
+# Attribute rotozoom rotates and then scales the player
+
+player_stand = pygame.transform.rotozoom(player_stand, 0, 0.2)
+player_stand_rect = player_stand.get_rect(center = (400,200))
+
+
 # Velocity of the poro
 move_speed = 4
 
 # initial position of the poro
 poro_x_pos = 200
 
+# Timer
 
+obstacle_timer = pygame.USEREVENT + 1
+pygame.time.set_timer(obstacle_timer, 1400)
 
 
 
@@ -95,6 +147,7 @@ while True:
                 if event.key == pygame.K_SPACE:
                     game_active = True
                     poro_rect.left = 800
+                    start_time = int(pygame.time.get_ticks() / 1000)
                     
         
                 
@@ -123,10 +176,10 @@ while True:
         # pygame.draw.rect(screen, '#c0e8ec', score_rect, )
         # pygame.draw.rect(screen, '#c0e8ec', score_rect, 10)
 
-        # display_score()
+        score = display_score()
 
 
-        
+
         # Draws a line
 
         # pygame.draw.line(screen, 'Gold', (0,0), pygame.mouse.get_pos(), 4)
@@ -134,14 +187,19 @@ while True:
         # Draws an ellipse
 
         pygame.draw.ellipse(screen, 'Brown', pygame.Rect(50,200,100,100))
-        screen.blit(score_surf, score_rect)
+        # screen.blit(score_surf, score_rect)
         
         poro_rect.x -= move_speed
         
         if poro_rect.x <= 0:
-            move_speed = -4
-        if poro_rect.x >= 800:
-            move_speed = 4
+            poro_rect.left = 800
+
+        # Poro changes direction at x = 0
+
+        # if poro_rect.x <= 0:
+        #     move_speed = -4
+        # if poro_rect.x >= 800:
+        #     move_speed = 4
         
 
 
@@ -166,6 +224,12 @@ while True:
         if player_rect.bottom >= 300:
             player_rect.bottom = 300
         
+        # Obstacle movement
+        
+        obstacle_rect_list = obstacle_movement(obstacle_rect_list)
+
+
+
         # Collision
 
         # Game ends when poro touches player
@@ -203,7 +267,13 @@ while True:
         # draw all our elements
         # update everything
     else:
-        screen.fill('Yellow')
+    
+        screen.fill((94, 129, 162))
+        screen.blit(player_stand, player_stand_rect)
+        display_intro()
+
+    if event.type == obstacle_timer and game_active:
+        obstacle_rect_list.append(poro_surf.get_rect(bottomright = (randint(900,1100),300)))
 
     pygame.display.update()
     clock.tick(30)
