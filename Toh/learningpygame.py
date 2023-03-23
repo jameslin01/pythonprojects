@@ -27,18 +27,28 @@ def display_intro():
     screen.blit(instructions, instructions_rect)
 
 def obstacle_movement(obstacle_list):
+
     if obstacle_list:
        
        for obstacle_rect in obstacle_list:
             obstacle_rect.x -= 5
 
-            screen.blit(poro_surf, obstacle_rect)
+            if obstacle_rect.bottom == 300:
+                screen.blit(poro_surf, obstacle_rect)
+            else:
+                screen.blit(blaze_surf, obstacle_rect)
         
        obstacle_list = [obstacle for obstacle in obstacle_list if obstacle.x > -100]
 
        return obstacle_list
     else: 
         return []
+
+def collisions(player, obstacles):
+    if obstacles:
+        for obstacles_rect in obstacles:
+            if player.colliderect(obstacle_rect):
+                 
 
 # Basic setup
 
@@ -96,7 +106,7 @@ player_stand_rect = player_stand.get_rect(center = (400,200))
 
 
 # Velocity of the poro
-move_speed = 4
+move_speed = 3
 
 # initial position of the poro
 poro_x_pos = 200
@@ -104,7 +114,7 @@ poro_x_pos = 200
 # Timer
 
 obstacle_timer = pygame.USEREVENT + 1
-pygame.time.set_timer(obstacle_timer, 1400)
+pygame.time.set_timer(obstacle_timer, 2000)
 
 
 
