@@ -70,6 +70,10 @@ poro = pygame.image.load('graphics/poro.png').convert_alpha()
 poro_surf = pygame.transform.scale(poro, (175,100)).convert_alpha()
 poro_rect = poro_surf.get_rect(bottomright = (600,300))
 
+blaze_surf = pygame.image.load('graphics/blaze.png').convert_alpha()
+blaze_surf = pygame.transform.scale(blaze_surf, (175,100))
+blaze_rect = blaze_surf.get_rect(bottomright = (600,300))
+
 obstacle_rect_list = []
 
 
@@ -146,7 +150,7 @@ while True:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
                     game_active = True
-                    poro_rect.left = 800
+                    # poro_rect.left = 800
                     start_time = int(pygame.time.get_ticks() / 1000)
                     
         
@@ -233,8 +237,8 @@ while True:
         # Collision
 
         # Game ends when poro touches player
-        if poro_rect.colliderect(player_rect):
-            game_active = False
+        # if poro_rect.colliderect(player_rect):
+        #     game_active = False
 
 
 
@@ -273,7 +277,11 @@ while True:
         display_intro()
 
     if event.type == obstacle_timer and game_active:
-        obstacle_rect_list.append(poro_surf.get_rect(bottomright = (randint(900,1100),300)))
+
+        if randint(0,2):
+                obstacle_rect_list.append(poro_surf.get_rect(bottomright = (randint(900,1100),300)))
+        else:
+            obstacle_rect_list.append(blaze_surf.get_rect(bottomright = (randint(900,1100),210)))
 
     pygame.display.update()
     clock.tick(30)
