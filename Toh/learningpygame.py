@@ -48,7 +48,8 @@ def collisions(player, obstacles):
     if obstacles:
         for obstacles_rect in obstacles:
             if player.colliderect(obstacle_rect):
-                 
+                return False
+
 
 # Basic setup
 
