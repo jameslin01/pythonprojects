@@ -1,11 +1,11 @@
 import pygame
 import sys
 
-def display_score():
-    current_time = pygame.time.get_ticks()
-    score_surf = test_font.render(current_time, False, (64,64,64))
-    score_rect = score_surf.get_rect(center = (400,50))
-    print(current_time)
+# def display_score():
+#     current_time = pygame.time.get_ticks()
+#     score_surf = test_font.render(current_time, False, (64,64,64))
+#     score_rect = score_surf.get_rect(center = (400,50))
+#     print(current_time)
 
 
 
@@ -122,7 +122,11 @@ while True:
 
         # pygame.draw.rect(screen, '#c0e8ec', score_rect, )
         # pygame.draw.rect(screen, '#c0e8ec', score_rect, 10)
-        display_score()
+
+        # display_score()
+
+
+        
         # Draws a line
 
         # pygame.draw.line(screen, 'Gold', (0,0), pygame.mouse.get_pos(), 4)
