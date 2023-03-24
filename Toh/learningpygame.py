@@ -2,6 +2,7 @@ import pygame
 import sys
 from random import randint
 
+
 def display_score():
     global current_time
     # pygame.time.get_ticks() - start_time resets the time when game restarts
@@ -29,7 +30,7 @@ def display_intro():
 def obstacle_movement(obstacle_list):
 
     if obstacle_list:
-       
+       # Goes through the obstacles in obstacle_list
        for obstacle_rect in obstacle_list:
             obstacle_rect.x -= 5
 
@@ -46,9 +47,41 @@ def obstacle_movement(obstacle_list):
 
 def collisions(player, obstacles):
     if obstacles:
-        for obstacles_rect in obstacles:
+        for obstacle_rect in obstacles:
             if player.colliderect(obstacle_rect):
                 return False
+    return True
+
+def player_animation():
+    global player_surf, player_index
+    
+    if player_rect.bottom < 300:
+        # jump
+        player_surf = player_jump
+    
+    else:
+        # walk
+        player_index += 0.1
+        if player_index >= len(player_walk):
+            player_index = 0
+        player_surf = player_walk[int(player_index)]
+
+    # play walking animation if the player is on the floor
+    # display the jump surface when player is not on floor
+
+def player_movement():
+
+    if game_active:
+            
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_RIGHT:
+                player_rect.x += 10
+
+            if event.key == pygame.K_LEFT:
+                player_rect.x -= 10
+                        
+
+
 
 
 # Basic setup
@@ -77,20 +110,30 @@ bg = pygame.image.load('graphics/bg.png').convert()
 
 # Obstacles
 
+# Import enemies
+
 poro = pygame.image.load('graphics/poro.png').convert_alpha()
-poro_surf = pygame.transform.scale(poro, (175,100)).convert_alpha()
+poro_surf = pygame.transform.scale(poro, (90,150)).convert_alpha()
 poro_rect = poro_surf.get_rect(bottomright = (600,300))
 
 blaze_surf = pygame.image.load('graphics/blaze.png').convert_alpha()
-blaze_surf = pygame.transform.scale(blaze_surf, (175,100))
+blaze_surf = pygame.transform.scale(blaze_surf, (50,50))
 blaze_rect = blaze_surf.get_rect(bottomright = (600,300))
 
 obstacle_rect_list = []
 
+# Import Player
 
-
-player = pygame.image.load('graphics/player.png').convert_alpha()
-player_surf = pygame.transform.scale(player, (75,150)).convert_alpha()
+player_walk_1 = pygame.image.load('graphics/player_walk_1.png').convert_alpha()
+player_walk_1 = pygame.transform.scale(player_walk_1, (120,150))
+player_walk_2 = pygame.image.load('graphics/player_walk_2.png').convert_alpha()
+player_walk_2 = pygame.transform.scale(player_walk_2, (120,150))
+player_walk = [player_walk_1, player_walk_2]
+player_index = 0
+player_jump = pygame.image.load('graphics/player_jump.png').convert_alpha()
+player_jump = pygame.transform.scale(player_jump, (120,150))
+player_surf = pygame.transform.scale(player_walk[player_index], (75,90))
+player_surf = player_walk[player_index]
 player_rect = player_surf.get_rect(midbottom = (80,300))
 
 # Player is at ground
@@ -115,7 +158,7 @@ poro_x_pos = 200
 # Timer
 
 obstacle_timer = pygame.USEREVENT + 1
-pygame.time.set_timer(obstacle_timer, 2000)
+pygame.time.set_timer(obstacle_timer, 1200)
 
 
 
@@ -147,7 +190,7 @@ while True:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
                     if player_rect.bottom >= 300:
-                        player_gravity = -40
+                        player_gravity = -20
             
             if event.type == pygame.KEYUP:
                 print('key up')
@@ -157,6 +200,9 @@ while True:
                 if player_rect.collidepoint(event.pos):
                     if player_rect.bottom >= 300:
                         player_gravity = -20
+
+            player_movement()
+
         else:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
@@ -164,7 +210,12 @@ while True:
                     # poro_rect.left = 800
                     start_time = int(pygame.time.get_ticks() / 1000)
                     
-        
+        if event.type == obstacle_timer and game_active:
+
+            if randint(0,2):
+                    obstacle_rect_list.append(poro_surf.get_rect(bottomright = (randint(900,1100),300)))
+            else:
+                obstacle_rect_list.append(blaze_surf.get_rect(bottomright = (randint(900,1100),100)))
                 
     
         
@@ -201,13 +252,13 @@ while True:
 
         # Draws an ellipse
 
-        pygame.draw.ellipse(screen, 'Brown', pygame.Rect(50,200,100,100))
+        # pygame.draw.ellipse(screen, 'Brown', pygame.Rect(50,200,100,100))
         # screen.blit(score_surf, score_rect)
         
-        poro_rect.x -= move_speed
+        # poro_rect.x -= move_speed
         
-        if poro_rect.x <= 0:
-            poro_rect.left = 800
+        # if poro_rect.x <= 0:
+        #     poro_rect.left = 800
 
         # Poro changes direction at x = 0
 
@@ -219,13 +270,13 @@ while True:
 
 
 
-        #Keypress = Space
+        # Keypress = Space
 
         # keys = pygame.key.get_pressed()
         # if keys[pygame.K_SPACE]:
         #     print('jump')
 
-        screen.blit(poro_surf, poro_rect)
+        # screen.blit(poro_surf, poro_rect)
 
 
         # Player
@@ -238,6 +289,7 @@ while True:
 
         if player_rect.bottom >= 300:
             player_rect.bottom = 300
+        player_animation()
         
         # Obstacle movement
         
@@ -246,6 +298,8 @@ while True:
 
 
         # Collision
+
+        game_active = collisions(player_rect, obstacle_rect_list)
 
         # Game ends when poro touches player
         # if poro_rect.colliderect(player_rect):
@@ -285,14 +339,16 @@ while True:
     
         screen.fill((94, 129, 162))
         screen.blit(player_stand, player_stand_rect)
+        obstacle_rect_list.clear()
+
+        # Resets player's position after collision
+
+        player_rect.midbottom = (80,300)
+        player_gravity = 0
+
         display_intro()
 
-    if event.type == obstacle_timer and game_active:
-
-        if randint(0,2):
-                obstacle_rect_list.append(poro_surf.get_rect(bottomright = (randint(900,1100),300)))
-        else:
-            obstacle_rect_list.append(blaze_surf.get_rect(bottomright = (randint(900,1100),210)))
+    
 
     pygame.display.update()
     clock.tick(30)
