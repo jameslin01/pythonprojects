@@ -8,7 +8,7 @@ screen = pygame.display.set_mode((800,400))
 
 clock = pygame.time.Clock()
 test_font = pygame.font.Font(None, 50)
-game_active = True
+game_active = False
 start_time = 0
 moves = 0
 
@@ -34,6 +34,25 @@ tower3_rect = tower1_surf.get_rect(midbottom = (640, 335))
 
 
 
+def display_disks():
+
+    disks = []
+    for i in range(1,16):
+        for j in range(10,400,20):
+        
+            disk_surf = test_font.render(i, False, (64,64,64))
+            disk_rect = disk_surf.get_rect(center = (320,j))
+            screen.blit(disk_surf, disk_rect)
+            pygame.draw.rect(screen, 'white', disk_rect, 10)
+
+def choose_screen():
+    
+    
+    choose_title = test_font.render('Choose the number of disks', False, (64,64,64))
+    choose_title_rect = choose_title.get_rect(center = (120,20))
+    screen.blit(choose_title, choose_title_rect)
+
+        
 
 
 def display_intro():
@@ -42,10 +61,12 @@ def display_intro():
     game_title_rect = game_title.get_rect(center = (400,50))
     screen.blit(game_title, game_title_rect)
 
+    instructions = test_font.render('Press Spacebar to play', False, (64,64,64))
+    instructions_rect = instructions.get_rect(center = (400, 300))
+    screen.blit(instructions, instructions_rect)
+
 
 while True:
-    
-    screen.fill((64,64,64))
 
     # Events
 
@@ -57,12 +78,27 @@ while True:
 
 
     # Events for keys
+        
+        if game_active:
+
+            if event.type == pygame.KEYUP:
+                print('key up')
+
+        else:
+            screen.fill((94, 129, 162))
+            display_intro()
+
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    game_active = True
+
 
     if game_active:
-        
+            
         screen.blit(bg, (0,0))
 
         # pygame.draw.rect(screen, '')
+        
         screen.blit(board_surf, board_rect)
         screen.blit(tower1_surf, tower1_rect)
         screen.blit(tower2_surf, tower2_rect)
@@ -71,15 +107,16 @@ while True:
         # Get coordinates based on where your mouse is
 
         mouse_pos = pygame.mouse.get_pos()
+        pos_surf = test_font.render('Pos: ' + f'{mouse_pos}', False, (64,64,64))
+        pos_rect = pos_surf.get_rect(center = (400,350))
 
         if event.type == pygame.MOUSEMOTION:
-            pos_surf = test_font.render('Pos: ' + f'{mouse_pos}', False, (64,64,64))
-            pos_rect = pos_surf.get_rect(center = (400,350))
             screen.blit(pos_surf, pos_rect)
-    
-    else:
         
-        screen.fill((94, 129, 162))
+    
+        
+            
+        
 
 
 
@@ -87,6 +124,7 @@ while True:
     pygame.display.update()
 
     # Sets the framerate for the game
+
     clock.tick(30)
 
             
