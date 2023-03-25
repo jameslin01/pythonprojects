@@ -2,24 +2,27 @@ import pygame
 import sys
 from random import randint
 
+# Note: Finish animation the obstacles
+
 
 # Sprite class for player
-
-# Need to fix animation
 
 class Player(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
         player_walk_1 = pygame.image.load('graphics/player_walk_1.png').convert_alpha()
         player_walk_1 = pygame.transform.scale(player_walk_1, (120, 150))
-        player_walk_2 = pygame.image.load('graphics/player_walk_1.png').convert_alpha()
+        player_walk_2 = pygame.image.load('graphics/player_walk_2.png').convert_alpha()
         player_walk_2 = pygame.transform.scale(player_walk_2, (120, 150))
     
         self.player_walk = [player_walk_1, player_walk_2]
         self.player_index = 0
+
         self.player_jump = pygame.image.load('graphics/player_jump.png').convert_alpha()
         self.player_jump = pygame.transform.scale(self.player_jump, (120, 150))
+
         self.image = self.player_walk[self.player_index]
+
         self.rect = self.image.get_rect(midbottom = (200, 300))
         self.gravity = 0
 
@@ -41,14 +44,46 @@ class Player(pygame.sprite.Sprite):
             self.player_index += 0.1
             if self.player_index >= len(self.player_walk):
                 self.player_index = 0
-            self.player = self.player_walk[int(self.player_index)]
+            self.image = self.player_walk[int(self.player_index)]
 
     def update(self):
         self.player_input()
         self.apply_gravity()
         self.animation_state()
 
+# Sprite class for Obstacle
+
+class Obstacle(pygame.sprite.Sprite):
+    def __init__(self,type):
+        super().__init__()
+        
+        if type == 'blaze':
+
+            blaze_surf = pygame.image.load('graphics/blaze.png').convert_alpha()
+            blaze_surf = pygame.transform.scale(blaze_surf, (50,50))
+            y_pos = 50
+        else:
+            poro = pygame.image.load('graphics/poro.png').convert_alpha()
+            poro_surf = pygame.transform.scale(poro, (90,150)).convert_alpha()
+            y_pos = 300
+
+
+
+        self.animation_index = 0
+        self.image = self.frames[self.animation_index]
+        self.rect = self.image.get_rect(midbottom = (randint(900,1100),y_pos))
+
+    def animation_state(self):
+        self.animation_index += 0.1
+        if self.animation_index >= len(self.frames):
+            self.animation_index = 0
+        self.image = self.frames[int(self.animation_index)]
+
+    # Update function to update frames
     
+    def update(self):
+        self.animation_state()
+
 
 
 def display_score():
@@ -151,8 +186,13 @@ game_active = False
 start_time = 0
 score = 0
 
+# Groups
+
 player = pygame.sprite.GroupSingle()
 player.add(Player())
+
+obstacle_group = pygame.sprite.Group()
+
 
 bg = pygame.image.load('graphics/bg.png').convert()
 
