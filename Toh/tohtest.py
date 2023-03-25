@@ -99,6 +99,8 @@ def draw_Rect(left, top, width, height):
 
 colour = ['aliceblue', 'antiquewhite', 'aqua', 'aquamarine', 'blue', 'blueviolet', 'brown', 'cadetblue', 'chartreuse', 'chocolate', 'coral', 'cornflowerblue', 'cyan', 'darkblue', 'orange', 'deeppink']
 
+disks = []
+
 def display_disks():
 
     width = 160
@@ -111,9 +113,7 @@ def display_disks():
         screen.blit(disk_surf, disk_rect)
         width -=10
         disk_rect_y -=20
-
-        
-
+    
 
 
 while True:
