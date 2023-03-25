@@ -228,7 +228,7 @@ while True:
     
     #     if event.type == pygame.MOUSEBUTTONUP:
     #         print('mouse up')
-    # #Checks if user's mouse is moving
+    # #Checks where the user's mouse is moving
     #     '''if event.type == pygame.MOUSEMOTION:
     #         print(mouse_pos)
     #     '''
