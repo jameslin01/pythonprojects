@@ -30,7 +30,9 @@ def display_intro():
 def obstacle_movement(obstacle_list):
 
     if obstacle_list:
+       
        # Goes through the obstacles in obstacle_list
+       
        for obstacle_rect in obstacle_list:
             obstacle_rect.x -= 5
 
