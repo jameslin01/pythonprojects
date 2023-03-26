@@ -63,38 +63,112 @@ towerofhanoi(n, 'A', 'C', 'B')'''
 
 
 
+# import pygame
+# pygame.init()
+
+# screen = pygame.display.set_mode((500,500))
+# pygame.display.set_caption('pygamebutton')
+
+# font = pygame.font.SysFont('Georgia',40,bold=True)
+# surf = font.render('Quit', True, 'white')
+# button = pygame.Rect(200,200,100,60)
+
+# while True:
+#     screen.fill('pink')
+#     for events in pygame.event.get():
+#         if events.type == pygame.QUIT:
+#             pygame.quit()
+#         if events.type == pygame.MOUSEBUTTONDOWN:
+#             if button.collidepoint(events.pos):
+#                 pygame.quit()
+                
+#     # Checks whether the button is pressed
+
+#     a,b = pygame.mouse.get_pos()
+#     if button.x <= a <= button.x + 100 and button.y <= b <= button.y + 60:
+#         pygame.draw.rect(screen, (180,180,180), button )
+#     else:
+#         pygame.draw.rect(screen, (110, 110, 100), button)
+
+#     screen.blit(surf, (button.x +5, button.y+5))
+#     pygame.display.update()
+
+
 import pygame
 pygame.init()
 
-screen = pygame.display.set_mode((500,500))
-pygame.display.set_caption('pygamebutton')
+# Set up the game window
+window_size = (800, 600)
+screen = pygame.display.set_mode(window_size)
+pygame.display.set_caption("Towers of Hanoi")
 
-font = pygame.font.SysFont('Georgia',40,bold=True)
-surf = font.render('Quit', True, 'white')
-button = pygame.Rect(200,200,100,60)
+# Set up the game objects
+tower_colors = [(255, 0, 0), (0, 255, 0), (0, 0, 255)]
+tower_width = 200
+tower_height = 400
+tower_gap = 100
+disk_width = 150
+disk_height = 20
+num_disks = 5
 
-while True:
-    screen.fill('pink')
-    for events in pygame.event.get():
-        if events.type == pygame.QUIT:
-            pygame.quit()
-        if events.type == pygame.MOUSEBUTTONDOWN:
-            if button.collidepoint(events.pos):
-                pygame.quit()
-                
-    # Checks whether the button is pressed
+towers = [[], [], []]
+for i in range(num_disks):
+    towers[0].append(pygame.Rect(0, 0, disk_width + 20*i, disk_height))
+    towers[0][i].centerx = tower_width/2
+    towers[0][i].bottom = tower_height
+    
+base = pygame.Rect(0, 0, tower_width + 2*tower_gap, 10)
+base.centerx = screen.get_rect().centerx
+base.bottom = tower_height + 10
 
-    a,b = pygame.mouse.get_pos()
-    if button.x <= a <= button.x + 100 and button.y <= b <= button.y + 60:
-        pygame.draw.rect(screen, (180,180,180), button )
-    else:
-        pygame.draw.rect(screen, (110, 110, 100), button)
+# Set up the game loop
+clock = pygame.time.Clock()
+running = True
+selected_tower = None
+selected_disk = None
 
-    screen.blit(surf, (button.x +5, button.y+5))
-    pygame.display.update()
+while running:
+    # Handle events
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            mouse_pos = pygame.mouse.get_pos()
+            for i, tower in enumerate(towers):
+                if len(tower) > 0 and tower[-1].collidepoint(mouse_pos):
+                    selected_tower = i
+                    selected_disk = tower.pop()
+                    break
+            else:
+                for i, tower in enumerate(towers):
+                    if len(tower) == 0 or tower[-1].width > selected_disk.width:
+                        tower.append(selected_disk)
+                        selected_tower = None
+                        selected_disk = None
+                        break
+    
+    # Draw the game objects
+    screen.fill((255, 255, 255))
+    
+    for i, tower in enumerate(towers):
+        rect = pygame.Rect(0, 0, tower_width, tower_height)
+        rect.left = i*tower_width + (i+1)*tower_gap
+        rect.bottom = tower_height
+        pygame.draw.rect(screen, tower_colors[i], rect)
+        
+        for disk in tower:
+            rect = pygame.Rect(0, 0, disk.width, disk.height)
+            rect.centerx = tower_width/2 + i*tower_width + (i+1)*tower_gap
+            rect.bottom = disk.bottom
+            pygame.draw.rect(screen, (0, 0, 0), rect)
+            pygame.draw.rect(screen, tower_colors[i], rect, 5)
+    
+    pygame.draw.rect(screen, (0, 0, 0), base)
+    
+    pygame.display.flip()
+    
+    # Limit the frame rate
+    clock.tick(30)
 
-
-
-
-
-
+# Clean up the game
+pygame.quit()

@@ -1,5 +1,6 @@
 import pygame
 import sys
+from functions import *
 
 # Basic setup
 
@@ -61,6 +62,7 @@ def choose_disks():
     x, y = 100, 100
     count_x = 0
     global choose_rect
+    global chosen_num
 
     for numbers in disks_num:
 
@@ -85,7 +87,8 @@ def choose_disks():
             count_x = 0
             x += 200
             y = 100
-        
+
+
 
 def choose_screen():
     
@@ -110,13 +113,19 @@ def display_disks():
         disk_surf = pygame.Surface((width, 20))
         disk_surf.fill(colour[i-1])
         disk_rect = disk_surf.get_rect(center = (160, disk_rect_y))
-        if len(disks) < 17:
+        if len(disks) < chosen_num:
             disks.append(disk_rect)
         screen.blit(disk_surf, disk_rect)
         width -=10
         disk_rect_y -=20
-    
-    
+
+def move_disk():
+    for disk in disks:
+        disk_surf = pygame.Surface((160, 20))
+        disk_surf.fill(colour[0])
+        disk.right +=5
+        screen.blit(disk_surf, disk)
+        
 
 
 while True:
@@ -132,20 +141,25 @@ while True:
         
         if event.type == pygame.MOUSEBUTTONDOWN:
             if choose_active:
-                for n in range(len(num_rect)):
+                for i in range(len(num_rect)):
 
                     # Checks if the mouse clicks collides with any of the numbers
 
-                    if num_rect[n].collidepoint(event.pos):
-                        chosen_num = n+1
+                    if num_rect[i].collidepoint(event.pos):
+                        chosen_num = i+1
                         choose_active = False
                         game_active = True
+                        moves_printout(chosen_num)
+                        print(moves_list)
+                    
+                        
                         break
                     else:
                         choose_active = True
+                        
                     
                         
-            
+        
                     
 
     # Events for keys
@@ -154,6 +168,9 @@ while True:
 
             if event.type == pygame.KEYUP:
                 print('key up')
+                move_disk()
+                print(disks)
+
             # if event.type == pygame.KEYDOWN:
             #     if event.key == pygame.K_SPACE:
             #         print(disks)
@@ -165,6 +182,7 @@ while True:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
                     choose_active = True
+
 
 
     if game_active:
@@ -183,6 +201,7 @@ while True:
         screen.blit(tower3_surf, tower3_rect)
 
         display_disks()
+        
 
         # Get coordinates based on where your mouse is
 
