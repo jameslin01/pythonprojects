@@ -110,9 +110,12 @@ def display_disks():
         disk_surf = pygame.Surface((width, 20))
         disk_surf.fill(colour[i-1])
         disk_rect = disk_surf.get_rect(center = (160, disk_rect_y))
+        if len(disks) < 17:
+            disks.append(disk_rect)
         screen.blit(disk_surf, disk_rect)
         width -=10
         disk_rect_y -=20
+    
     
 
 
@@ -151,6 +154,9 @@ while True:
 
             if event.type == pygame.KEYUP:
                 print('key up')
+            # if event.type == pygame.KEYDOWN:
+            #     if event.key == pygame.K_SPACE:
+            #         print(disks)
 
         else:
             screen.fill((94, 129, 162))
