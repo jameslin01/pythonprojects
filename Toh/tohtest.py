@@ -17,18 +17,7 @@ moves = 0
 
 # Timer
 
-class Timer:
-    def __init__(self, ticks, interval, callback):
-        self.tick = ticks + interval
-        self.interval = interval
-        self.callback = callback
-
-    def update(self, ticks):
-        if ticks > self.tick:
-            self.tick += self.interval
-            self.callback(self)
-
-bg = pygame.image.load('tohgraphics/bg.jpeg').convert()
+bg = pygame.image.load('Toh/tohgraphics/bg.jpeg').convert()
 bg = pygame.transform.scale(bg, (800,400))
 
 board_surf = pygame.Surface((720,25))
