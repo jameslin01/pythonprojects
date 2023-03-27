@@ -15,6 +15,18 @@ choose_active = False
 start_time = 0
 moves = 0
 
+# Timer
+
+class Timer:
+    def __init__(self, ticks, interval, callback):
+        self.tick = ticks + interval
+        self.interval = interval
+        self.callback = callback
+
+    def update(self, ticks):
+        if ticks > self.tick:
+            self.tick += self.interval
+            self.callback(self)
 
 bg = pygame.image.load('tohgraphics/bg.jpeg').convert()
 bg = pygame.transform.scale(bg, (800,400))
@@ -29,11 +41,15 @@ tower1_surf = pygame.Surface((10,200))
 tower1_surf.fill('Silver')
 tower1_rect = tower1_surf.get_rect(midbottom = (160, 335))
 
+(tower1_pos_x, tower1_pos_y) = (160, 325)
+
 # Tower 2
 
 tower2_surf = pygame.Surface((10,200))
 tower2_surf.fill('Silver')
 tower2_rect = tower1_surf.get_rect(midbottom = (400, 335))
+
+(tower2_pos_x, tower2_pos_y) = (400, 325)
 
 # Tower 3
 
@@ -41,9 +57,12 @@ tower3_surf = pygame.Surface((10,200))
 tower3_surf.fill('Silver')
 tower3_rect = tower1_surf.get_rect(midbottom = (640, 335))
 
+(tower3_pos_x, tower3_pos_y) = (640, 325)
+
 disks_num = [str(i) for i in range(1,17)]
 
 num_rect = []
+
 
 def display_intro():
 
@@ -100,32 +119,61 @@ def draw_Rect(left, top, width, height):
 
     pygame.draw.rect(screen, 'Cyan', pygame.Rect(left, top, width, height))
 
-colour = ['aliceblue', 'antiquewhite', 'aqua', 'aquamarine', 'blue', 'blueviolet', 'brown', 'cadetblue', 'chartreuse', 'chocolate', 'coral', 'cornflowerblue', 'cyan', 'darkblue', 'orange', 'deeppink']
+colours = ['aliceblue', 'antiquewhite', 'aqua', 'aquamarine', 'blue', 'blueviolet', 'brown', 'cadetblue', 'chartreuse', 'chocolate', 'coral', 'cornflowerblue', 'cyan', 'darkblue', 'orange', 'deeppink']
 
 disks = []
 
-def display_disks():
+rectangles = []
 
+choose_colour = []
+
+
+def create_disks():
+
+    global width
+    global disk_rect_y
     width = 160
-    disk_rect_y = 330
+    disk_rect_y = 325
 
-    for i in range(1, chosen_num + 1):
-        disk_surf = pygame.Surface((width, 20))
-        disk_surf.fill(colour[i-1])
-        disk_rect = disk_surf.get_rect(center = (160, disk_rect_y))
+    for count in range(chosen_num):
+        rect = pygame.Rect(0,0, width, 20)
+        rect.center = (160, disk_rect_y)
+
         if len(disks) < chosen_num:
-            disks.append(disk_rect)
-        screen.blit(disk_surf, disk_rect)
-        width -=10
-        disk_rect_y -=20
+
+            disks.append([rect, colours[count]])
+            width -=10
+            disk_rect_y -=20
+
+
+def draw_disks():
+
+    for (disk, colour) in disks:
+        pygame.draw.rect(screen, colour, disk)
+
+
 
 def move_disk():
-    for disk in disks:
-        disk_surf = pygame.Surface((160, 20))
-        disk_surf.fill(colour[0])
-        disk.right +=5
-        screen.blit(disk_surf, disk)
+
+    # Centers the disk at a tower
+    tower2_pos_y = 325
+    for i in range(len(disks)):
+        disks[i][0].center = (tower2_pos_x, tower2_pos_y)
+        tower2_pos_y -= 20
+
+    for (n, instruction) in moves_list:
+        # if instruction == 'left':
+
+        #     disks[int(n)+1][0].move(600, 325)
+        # for i in range(2):
+        #     disks[int(n)+1][0].move(200, 200)
+        disks[0][0].move(10, -20)
         
+        
+        
+
+
+
 
 
 while True:
@@ -151,8 +199,8 @@ while True:
                         game_active = True
                         moves_printout(chosen_num)
                         print(moves_list)
-                    
-                        
+                        create_disks()
+                        disks.reverse()                
                         break
                     else:
                         choose_active = True
@@ -199,9 +247,9 @@ while True:
         screen.blit(tower1_surf, tower1_rect)
         screen.blit(tower2_surf, tower2_rect)
         screen.blit(tower3_surf, tower3_rect)
+       
 
-        display_disks()
-        
+        draw_disks()
 
         # Get coordinates based on where your mouse is
 
