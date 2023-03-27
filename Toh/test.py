@@ -94,81 +94,98 @@ towerofhanoi(n, 'A', 'C', 'B')'''
 #     pygame.display.update()
 
 
-import pygame
-pygame.init()
+# import pygame
+# pygame.init()
 
-# Set up the game window
-window_size = (800, 600)
-screen = pygame.display.set_mode(window_size)
-pygame.display.set_caption("Towers of Hanoi")
+# # Set up the game window
+# window_size = (800, 600)
+# screen = pygame.display.set_mode(window_size)
+# pygame.display.set_caption("Towers of Hanoi")
 
-# Set up the game objects
-tower_colors = [(255, 0, 0), (0, 255, 0), (0, 0, 255)]
-tower_width = 200
-tower_height = 400
-tower_gap = 100
-disk_width = 150
-disk_height = 20
-num_disks = 5
+# # Set up the game objects
+# tower_colors = [(255, 0, 0), (0, 255, 0), (0, 0, 255)]
+# tower_width = 200
+# tower_height = 400
+# tower_gap = 100
+# disk_width = 150
+# disk_height = 20
+# num_disks = 5
 
-towers = [[], [], []]
-for i in range(num_disks):
-    towers[0].append(pygame.Rect(0, 0, disk_width + 20*i, disk_height))
-    towers[0][i].centerx = tower_width/2
-    towers[0][i].bottom = tower_height
+# towers = [[], [], []]
+# for i in range(num_disks):
+#     towers[0].append(pygame.Rect(0, 0, disk_width + 20*i, disk_height))
+#     towers[0][i].centerx = tower_width/2
+#     towers[0][i].bottom = tower_height
     
-base = pygame.Rect(0, 0, tower_width + 2*tower_gap, 10)
-base.centerx = screen.get_rect().centerx
-base.bottom = tower_height + 10
+# base = pygame.Rect(0, 0, tower_width + 2*tower_gap, 10)
+# base.centerx = screen.get_rect().centerx
+# base.bottom = tower_height + 10
 
-# Set up the game loop
-clock = pygame.time.Clock()
-running = True
-selected_tower = None
-selected_disk = None
+# # Set up the game loop
+# clock = pygame.time.Clock()
+# running = True
+# selected_tower = None
+# selected_disk = None
 
-while running:
-    # Handle events
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
-        elif event.type == pygame.MOUSEBUTTONDOWN:
-            mouse_pos = pygame.mouse.get_pos()
-            for i, tower in enumerate(towers):
-                if len(tower) > 0 and tower[-1].collidepoint(mouse_pos):
-                    selected_tower = i
-                    selected_disk = tower.pop()
-                    break
-            else:
-                for i, tower in enumerate(towers):
-                    if len(tower) == 0 or tower[-1].width > selected_disk.width:
-                        tower.append(selected_disk)
-                        selected_tower = None
-                        selected_disk = None
-                        break
+# while running:
+#     # Handle events
+#     for event in pygame.event.get():
+#         if event.type == pygame.QUIT:
+#             running = False
+#         elif event.type == pygame.MOUSEBUTTONDOWN:
+#             mouse_pos = pygame.mouse.get_pos()
+#             for i, tower in enumerate(towers):
+#                 if len(tower) > 0 and tower[-1].collidepoint(mouse_pos):
+#                     selected_tower = i
+#                     selected_disk = tower.pop()
+#                     break
+#             else:
+#                 for i, tower in enumerate(towers):
+#                     if len(tower) == 0 or tower[-1].width > selected_disk.width:
+#                         tower.append(selected_disk)
+#                         selected_tower = None
+#                         selected_disk = None
+#                         break
     
-    # Draw the game objects
-    screen.fill((255, 255, 255))
+#     # Draw the game objects
+#     screen.fill((255, 255, 255))
     
-    for i, tower in enumerate(towers):
-        rect = pygame.Rect(0, 0, tower_width, tower_height)
-        rect.left = i*tower_width + (i+1)*tower_gap
-        rect.bottom = tower_height
-        pygame.draw.rect(screen, tower_colors[i], rect)
+#     for i, tower in enumerate(towers):
+#         rect = pygame.Rect(0, 0, tower_width, tower_height)
+#         rect.left = i*tower_width + (i+1)*tower_gap
+#         rect.bottom = tower_height
+#         pygame.draw.rect(screen, tower_colors[i], rect)
         
-        for disk in tower:
-            rect = pygame.Rect(0, 0, disk.width, disk.height)
-            rect.centerx = tower_width/2 + i*tower_width + (i+1)*tower_gap
-            rect.bottom = disk.bottom
-            pygame.draw.rect(screen, (0, 0, 0), rect)
-            pygame.draw.rect(screen, tower_colors[i], rect, 5)
+#         for disk in tower:
+#             rect = pygame.Rect(0, 0, disk.width, disk.height)
+#             rect.centerx = tower_width/2 + i*tower_width + (i+1)*tower_gap
+#             rect.bottom = disk.bottom
+#             pygame.draw.rect(screen, (0, 0, 0), rect)
+#             pygame.draw.rect(screen, tower_colors[i], rect, 5)
     
-    pygame.draw.rect(screen, (0, 0, 0), base)
+#     pygame.draw.rect(screen, (0, 0, 0), base)
     
-    pygame.display.flip()
+#     pygame.display.flip()
     
-    # Limit the frame rate
-    clock.tick(30)
+#     # Limit the frame rate
+#     clock.tick(30)
 
-# Clean up the game
-pygame.quit()
+# # Clean up the game
+# pygame.quit()
+
+# list = [[1,2], [3,4]]
+# list.append([3,4])
+
+# print(list)
+ 
+def TowerOfHanoi(n , source, destination, auxiliary):
+    if n==1:
+        print ("Move disk 1 from source",source,"to destination",destination)
+        return
+    TowerOfHanoi(n-1, source, auxiliary, destination)
+    print ("Move disk",n,"from source",source,"to destination",destination)
+    TowerOfHanoi(n-1, auxiliary, destination, source)
+         
+# Driver code
+n = 9
+TowerOfHanoi(n,'A','B','C')

@@ -20,10 +20,10 @@ def moves(n, left):
     moves(n-1, not left) 
 
     if left:
-        moves_list.append(str(n) + ' left')
+        moves_list.append([str(n), 'left'])
 
     else:
-        moves_list.append(str(n) + ' right')
+        moves_list.append([str(n), 'right'])
 
     moves(n-1, not left)
     
