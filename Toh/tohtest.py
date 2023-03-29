@@ -12,6 +12,7 @@ clock = pygame.time.Clock()
 test_font = pygame.font.Font(None, 50)
 game_active = False
 choose_active = False
+speed_active = False
 start_time = 0
 moves = 0
 frames_per_second = 10 + 10*2
@@ -464,7 +465,7 @@ while True:
 
     # Sets the framerate for the game
 
-    clock.tick(60)
+    clock.tick(40)
 
             
 
