@@ -1,7 +1,7 @@
 import pygame
 import sys
 from functions import *
-
+i = 0
 # Basic setup
 
 pygame.init()
@@ -14,6 +14,7 @@ game_active = False
 choose_active = False
 start_time = 0
 moves = 0
+frames_per_second = 10 + 10*2
 
 # Timer
 
@@ -142,15 +143,204 @@ def draw_disks():
 
 
 
+index = 0
+index_l = 0
+index_l1 = 1
+
+count_t1 = len(disks)
+count_t2 = 0
+count_t3 = 0
+
+
+
+
 def move_disk():
 
-    # Centers the disk at a tower
-    tower2_pos_y = 325
-    for i in range(len(disks)):
-        disks[i][0].center = (tower2_pos_x, tower2_pos_y)
-        tower2_pos_y -= 20
+    global tower1_pos_x
+    global tower2_pos_y
+    global tower3_pos_y
 
-    for (n, instruction) in moves_list:
+    global index
+    global index_l
+  
+    global th_1
+    global th_2
+    global th_3
+
+    global count_t1
+    global count_t2
+    global count_t3
+
+    global chosen_num
+
+    t1_x = tower1_pos_x 
+    t2_x = tower2_pos_x
+    t3_x = tower3_pos_x
+
+    th_1 = 325 - 20*chosen_num
+    th_2 = 325
+    th_3 = 325
+
+
+    # Centers the disk at a tower
+    
+    # for i in range(len(disks)):
+    if index_l < len(moves_list):
+       
+        p = int((moves_list[index_l][0])) - 1
+        p1 = (moves_list)[index_l][index_l1]
+
+        pos_x, pos_y = disks[p][0].center
+
+        
+
+        if pos_x == t1_x:
+            
+            wraparound = 1
+
+        if pos_x == t2_x:
+            
+            wraparound = 0
+
+        if pos_x == t3_x:
+            
+            wraparound = 2
+
+        if p1 == 'left' and wraparound == 1:
+
+            
+            if count_t3 == 0:
+
+                disks[p][0].center = (tower3_pos_x, th_3)
+
+            else:
+
+                disks[p][0].center = (tower3_pos_x, th_3 - 20*count_t3)
+
+                
+            count_t1 -= 1
+            count_t3 += 1
+
+        if p1 == 'left' and wraparound == 0:
+
+            
+            
+            if count_t1 == 0:
+
+                disks[p][0].center = (tower1_pos_x, th_1)
+            
+            
+            else:
+
+                
+                disks[p][0].center = (tower1_pos_x, th_1 - 20*count_t1)
+                
+                
+
+            count_t2 -= 1
+            count_t1 += 1
+           
+
+        if p1 == 'left' and wraparound == 2:
+
+            
+            
+
+            if count_t2 == 0:
+
+
+                disks[p][0].center = (tower2_pos_x, th_2)
+               
+
+            else:
+
+                
+                disks[p][0].center = (tower2_pos_x, th_2 - 20*count_t2)
+                
+
+            count_t3 -= 1
+            count_t2 += 1
+            
+
+        if p1 == 'right' and wraparound == 1:
+
+           
+
+            if count_t2 == 0:
+                
+
+                disks[p][0].center = (tower2_pos_x, th_2)
+
+
+            else:
+
+                
+                
+                disks[p][0].center = (tower2_pos_x, th_2 - 20*count_t2)
+                
+            
+            count_t1 -= 1
+            count_t2 += 1
+            
+
+        if p1 == 'right' and wraparound == 0:
+
+            
+            
+
+            if count_t3 == 0:
+
+                
+                disks[p][0].center = (tower3_pos_x, th_3)
+            
+
+            else:
+
+                
+                
+                disks[p][0].center = (tower3_pos_x, th_3 - 20*count_t3)
+                
+
+            
+            count_t2 -= 1
+            count_t3 += 1
+            
+
+        if p1 == 'right' and wraparound == 2:
+
+            
+            
+
+            if count_t1 == 0:
+                
+
+                disks[p][0].center = (tower1_pos_x, th_1)
+                
+
+
+            else:
+
+                
+                disks[p][0].center = (tower1_pos_x, th_1 - 20*count_t1)
+            
+                
+            count_t3 -= 1
+            count_t1 += 1
+            
+
+        index_l += 1
+
+
+    # if index < len(disks):
+    #     disks[index][0].center = (tower2_pos_x, tower2_pos_y)
+    #     tower2_pos_y -= 20
+    #     index += 1
+    
+
+    
+    
+
+    for (n, instruction) in  moves_list:
         # if instruction == 'left':
 
         #     disks[int(n)+1][0].move(600, 325)
@@ -205,7 +395,9 @@ while True:
 
             if event.type == pygame.KEYUP:
                 print('key up')
+                
                 move_disk()
+                i += 1
                 print(disks)
 
             # if event.type == pygame.KEYDOWN:
@@ -237,9 +429,10 @@ while True:
         screen.blit(tower2_surf, tower2_rect)
         screen.blit(tower3_surf, tower3_rect)
        
-
+        
         draw_disks()
-
+        move_disk()
+        
         # Get coordinates based on where your mouse is
 
         mouse_pos = pygame.mouse.get_pos()
@@ -271,7 +464,7 @@ while True:
 
     # Sets the framerate for the game
 
-    clock.tick(30)
+    clock.tick(60)
 
             
 
