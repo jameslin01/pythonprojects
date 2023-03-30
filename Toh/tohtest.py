@@ -20,7 +20,8 @@ frames_per_second = 10
 
 # Timer
 
-bg = pygame.image.load('Toh/tohgraphics/bg.jpeg')
+# bg = pygame.image.load('Toh/tohgraphics/bg.jpeg')
+bg = pygame.image.load('tohgraphics/bg.jpeg')
 bg = pygame.transform.scale(bg, (800,400))
 
 board_surf = pygame.Surface((720,25))
@@ -99,7 +100,7 @@ def choose_disks():
             count_x = 0
             x += 200
             y = 100
-
+    return None
 
 
 def choose_screen():
@@ -108,6 +109,7 @@ def choose_screen():
     choose_title_rect = choose_title.get_rect(center = (400,20))
     screen.blit(choose_title, choose_title_rect)
 
+    return None
 
 speed = [str(i) for i in range(1,11)]
 
@@ -145,20 +147,22 @@ def choose_speed():
             x += 200
             y = 100
 
+    return None
+
 
 
 
 def speed_screen():
     
-    speed_title = test_font.render('Choose the speedo the animation', False, (64,64,64))
+    speed_title = test_font.render('Choose the speed of the animation', False, (64,64,64))
     speed_title_rect = speed_title.get_rect(center = (400,20))
     screen.blit(speed_title, speed_title_rect)
-
+    return None
 
 def draw_Rect(left, top, width, height):
 
     pygame.draw.rect(screen, 'Cyan', pygame.Rect(left, top, width, height))
-
+    return None
 colours = ['aliceblue', 'antiquewhite', 'aqua', 'aquamarine', 'blue', 'blueviolet', 'brown', 'cadetblue', 'chartreuse', 'chocolate', 'coral', 'cornflowerblue', 'cyan', 'darkblue', 'orange', 'deeppink']
 
 disks = []
@@ -383,7 +387,7 @@ def move_disk():
         index_l += 1
 
 
-        
+draw_moves = False        
         
 
 while True:
@@ -396,6 +400,10 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
             exit()
+
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_SPACE:
+                print(frames_per_second)
         
         if event.type == pygame.MOUSEBUTTONDOWN:          
 
@@ -417,7 +425,7 @@ while True:
                     else:
                         choose_active = True
                         
-            if speed_active:
+            if not draw_moves and speed_active:
 
                 for i in range(len(num_rect)):
 
@@ -425,31 +433,18 @@ while True:
                         chosen_speed = i+1
                         speed_active = False
                         game_active = True
-                        frames_per_second = 10 + 10*chosen_speed
+                        frames_per_second = 10*chosen_speed
                                        
                         break
                     else:
                         speed_active = True
-                        
+
         
                     
 
     # Events for keys
         
-        if game_active:
-
-            if event.type == pygame.KEYUP:
-                print('key up')
-                
-                move_disk()
-                i += 1
-                print(disks)
-
-            # if event.type == pygame.KEYDOWN:
-            #     if event.key == pygame.K_SPACE:
-            #         print(disks)
-
-        else:
+        if not game_active:
             screen.fill((94, 129, 162))
             display_intro()
 
@@ -499,7 +494,11 @@ while True:
         speed_screen()
         choose_speed()
 
+    pygame.display.update()
 
+    # Sets the framerate for the game
+
+    clock.tick(frames_per_second)
 
         
         
@@ -512,11 +511,6 @@ while True:
 
 
 
-    pygame.display.update()
-
-    # Sets the framerate for the game
-
-    clock.tick(frames_per_second)
 
             
 
