@@ -1,7 +1,8 @@
 import pygame
 import sys
 from functions import *
-i = 0
+
+
 # Basic setup
 
 pygame.init()
@@ -19,7 +20,7 @@ frames_per_second = 10 + 10*2
 
 # Timer
 
-bg = pygame.image.load('Toh/tohgraphics/bg.jpeg').convert()
+bg = pygame.image.load('Toh/tohgraphics/bg.jpeg')
 bg = pygame.transform.scale(bg, (800,400))
 
 board_surf = pygame.Surface((720,25))
@@ -105,6 +106,53 @@ def choose_screen():
     choose_title = test_font.render('Choose the number of disks', False, (64,64,64))
     choose_title_rect = choose_title.get_rect(center = (400,20))
     screen.blit(choose_title, choose_title_rect)
+
+
+speed = [i for i in range(1,11)]
+
+speed_rect = []
+
+
+def choose_speed():
+    
+    x, y = 100, 100
+    count_x = 0
+    global speed_rect
+    global chosen_speed
+
+    for numbers in speed:
+
+        if count_x < 3:
+            speed_surf = test_font.render(numbers, False, (64,64,64))
+            speed_rect = speed_surf.get_rect(center = (x,y))
+
+            if len(speed_rect) < 11:
+                speed_rect.append(choose_rect)
+
+            screen.blit(speed_surf, speed_rect)
+            y += 60
+            count_x += 1
+        else:
+
+            speed_surf = test_font.render(numbers, False, (64,64,64))
+            speed_rect = speed_surf.get_rect(center = (x,y))
+
+            if len(speed_rect) < 17:
+                speed_rect.append(speed_rect)
+            screen.blit(speed_surf, speed_rect)
+            count_x = 0
+            x += 200
+            y = 100
+
+
+
+
+def speed_screen():
+    
+    speed_title = test_font.render('Choose the speedo the animation', False, (64,64,64))
+    speed_title_rect = speed_title.get_rect(center = (400,20))
+    screen.blit(speed_title, speed_title_rect)
+
 
 def draw_Rect(left, top, width, height):
 
@@ -332,29 +380,8 @@ def move_disk():
         index_l += 1
 
 
-    # if index < len(disks):
-    #     disks[index][0].center = (tower2_pos_x, tower2_pos_y)
-    #     tower2_pos_y -= 20
-    #     index += 1
-    
-
-    
-    
-
-    for (n, instruction) in  moves_list:
-        # if instruction == 'left':
-
-        #     disks[int(n)+1][0].move(600, 325)
-        # for i in range(2):
-        #     disks[int(n)+1][0].move(200, 200)
-        disks[0][0].move(10, -20)
         
         
-        
-
-
-
-
 
 while True:
 
@@ -367,7 +394,8 @@ while True:
             pygame.quit()
             exit()
         
-        if event.type == pygame.MOUSEBUTTONDOWN:
+        if event.type == pygame.MOUSEBUTTONDOWN:          
+
             if choose_active:
                 for i in range(len(num_rect)):
 
@@ -376,7 +404,7 @@ while True:
                     if num_rect[i].collidepoint(event.pos):
                         chosen_num = i+1
                         choose_active = False
-                        game_active = True
+                        speed_active = True
                         moves_printout(chosen_num)
                         print(moves_list)
                         create_disks()
@@ -385,7 +413,19 @@ while True:
                     else:
                         choose_active = True
                         
-                    
+            if speed_active:
+
+                for i in range(len(speed_rect)):
+
+                    if speed_rect[i].collidepoint(event.pos):
+                        chosen_speed = i+1
+                        speed_active = False
+                        game_active = True
+                        moves_printout(chosen_num)
+                        create_disks()                
+                        break
+                    else:
+                        speed_active = True
                         
         
                     
@@ -444,9 +484,15 @@ while True:
             screen.blit(pos_surf, pos_rect)
 
     if choose_active:
+
         screen.fill((94, 129, 162))
         choose_screen()
         choose_disks()
+    
+    if speed_active:
+
+        screen.fill((94, 129, 162))
+        speed_screen()
 
 
 
@@ -465,7 +511,7 @@ while True:
 
     # Sets the framerate for the game
 
-    clock.tick(40)
+    clock.tick(10)
 
             
 
