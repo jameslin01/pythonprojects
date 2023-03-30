@@ -20,8 +20,8 @@ frames_per_second = 10
 
 # Timer
 
-# bg = pygame.image.load('Toh/tohgraphics/bg.jpeg')
-bg = pygame.image.load('tohgraphics/bg.jpeg')
+bg = pygame.image.load('Toh/tohgraphics/bg.jpeg')
+# bg = pygame.image.load('tohgraphics/bg.jpeg')
 bg = pygame.transform.scale(bg, (800,400))
 
 board_surf = pygame.Surface((720,25))
@@ -401,9 +401,10 @@ while True:
             pygame.quit()
             exit()
 
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_SPACE:
-                print(frames_per_second)
+        if game_active:
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_SPACE:
+                    draw_moves = not draw_moves
         
         if event.type == pygame.MOUSEBUTTONDOWN:          
 
@@ -425,7 +426,7 @@ while True:
                     else:
                         choose_active = True
                         
-            if not draw_moves and speed_active:
+            if speed_active:
 
                 for i in range(len(num_rect)):
 
@@ -454,7 +455,7 @@ while True:
 
 
 
-    if game_active:
+    if game_active and not draw_moves:
         
         screen.blit(bg, (0,0))
 
