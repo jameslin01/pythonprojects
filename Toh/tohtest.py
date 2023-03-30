@@ -20,8 +20,8 @@ frames_per_second = 10
 
 # Timer
 
-bg = pygame.image.load('Toh/tohgraphics/bg.jpeg')
-# bg = pygame.image.load('tohgraphics/bg.jpeg')
+# bg = pygame.image.load('Toh/tohgraphics/bg.jpeg')
+bg = pygame.image.load('tohgraphics/bg.jpeg')
 bg = pygame.transform.scale(bg, (800,400))
 
 board_surf = pygame.Surface((720,25))
