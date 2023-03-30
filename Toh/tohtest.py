@@ -1,28 +1,44 @@
+# Imports
+
 import pygame
 import sys
 from functions import *
 
-
 # Basic setup
 
 pygame.init()
+
+# Sets the dimension of the window displayed to be 800 x 400
 screen = pygame.display.set_mode((800,400))
+
 pygame.display.set_caption('Towers of Hanoi')
 
 clock = pygame.time.Clock()
+
+# Sets the font of the upcoming texts
+
 test_font = pygame.font.Font(None, 50)
+
+# Intro screen is active at the beginning
+
 game_active = False
 choose_active = False
 speed_active = False
-start_time = 0
+
+# Initial number of moves
+
 moves = 0
+
+# Speed of the animation for the menu screens
+
 frames_per_second = 10
 
-# Timer
+# bg = pygame.image.load('Toh/tohgraphics/bg.jpeg')
+bg = pygame.image.load('tohgraphics/bg.jpeg')
 
-bg = pygame.image.load('Toh/tohgraphics/bg.jpeg')
-# bg = pygame.image.load('tohgraphics/bg.jpeg')
 bg = pygame.transform.scale(bg, (800,400))
+
+# Creates the board for the towers
 
 board_surf = pygame.Surface((720,25))
 board_surf.fill('#c0e8ec')
@@ -52,27 +68,39 @@ tower3_rect = tower1_surf.get_rect(midbottom = (640, 335))
 
 (tower3_pos_x, tower3_pos_y) = (640, 325)
 
+# Number of disks to display
+
 disks_num = [str(i) for i in range(1,17)]
+
+# List of rectangles each with different positions
 
 num_rect = []
 
-
 def display_intro():
+
+    '''Function that displays the intro screen before the game starts'''
+
+    # Displays title of the game
 
     game_title = test_font.render('Towers of Hanoi', False, (64,64,64))
     game_title_rect = game_title.get_rect(center = (400,50))
     screen.blit(game_title, game_title_rect)
 
+    # Displays instruction to play the game
+
     instructions = test_font.render('Press Spacebar to play', False, (64,64,64))
     instructions_rect = instructions.get_rect(center = (400, 300))
     screen.blit(instructions, instructions_rect)
 
+    return None
 
-        
 def choose_disks():
+
+    '''Function that displays the choices of disks for Towers of Hanoi'''
 
     x, y = 100, 100
     count_x = 0
+
     global choose_rect
     global chosen_num
 
@@ -87,6 +115,7 @@ def choose_disks():
                 num_rect.append(choose_rect)
 
             screen.blit(choose_surf, choose_rect)
+
             y += 60
             count_x += 1
         else:
@@ -96,30 +125,42 @@ def choose_disks():
 
             if len(num_rect) < 17:
                 num_rect.append(choose_rect)
+
             screen.blit(choose_surf, choose_rect)
+
             count_x = 0
             x += 200
             y = 100
+
     return None
 
 
 def choose_screen():
     
+    '''Function that displays the title on the choose screen'''
+
     choose_title = test_font.render('Choose the number of disks', False, (64,64,64))
     choose_title_rect = choose_title.get_rect(center = (400,20))
+
     screen.blit(choose_title, choose_title_rect)
 
     return None
 
+# The available choices for the speed of the animation
+
 speed = [str(i) for i in range(1,11)]
+
+# List of rectangles each with different positions
 
 speed_rect = []
 
-
 def choose_speed():
+
+    '''Function that displays the choice of the speed of animation'''
     
     x, y = 100, 100
     count_x = 0
+
     global speed_rect
     global chosen_speed
 
@@ -133,6 +174,7 @@ def choose_speed():
                 num_rect.append(speed_rect)
 
             screen.blit(speed_surf, speed_rect)
+
             y += 60
             count_x += 1
         else:
@@ -142,86 +184,92 @@ def choose_speed():
 
             if len(num_rect) < 11:
                 num_rect.append(speed_rect)
+                
             screen.blit(speed_surf, speed_rect)
+
             count_x = 0
             x += 200
             y = 100
 
     return None
 
-
-
-
 def speed_screen():
     
+    '''Displays the title on the speed screen'''
+
     speed_title = test_font.render('Choose the speed of the animation', False, (64,64,64))
     speed_title_rect = speed_title.get_rect(center = (400,20))
+    
     screen.blit(speed_title, speed_title_rect)
+
     return None
 
 def draw_Rect(left, top, width, height):
 
     pygame.draw.rect(screen, 'Cyan', pygame.Rect(left, top, width, height))
+    
     return None
+
+# List of up to 16 colours
+
 colours = ['aliceblue', 'antiquewhite', 'aqua', 'aquamarine', 'blue', 'blueviolet', 'brown', 'cadetblue', 'chartreuse', 'chocolate', 'coral', 'cornflowerblue', 'cyan', 'darkblue', 'orange', 'deeppink']
+
+# List of disks
 
 disks = []
 
-rectangles = []
-
-choose_colour = []
-
-
 def create_disks():
+
+    '''Function that creates the rectangles for the disks and puts them all into a list'''
 
     global width
     global disk_rect_y
+
     width = 160
     disk_rect_y = 325
 
     for count in range(chosen_num):
+
         rect = pygame.Rect(0,0, width, 20)
         rect.center = (160, disk_rect_y)
 
         if len(disks) < chosen_num:
 
             disks.append([rect, colours[count]])
+
             width -=10
             disk_rect_y -=20
 
+    return None
 
 def draw_disks():
 
+    '''Function that draws the rectangles on the screen'''
+
     for (disk, colour) in disks:
+
         pygame.draw.rect(screen, colour, disk)
 
+    return None
 
+# Indexes for the function move_disk()
 
-index = 0
 index_l = 0
 index_l1 = 1
+
+# Number of disks in each tower in starting position
 
 count_t1 = len(disks)
 count_t2 = 0
 count_t3 = 0
 
-
-
-
 def move_disk():
     
+    '''Function that creates the animation of the moving disks'''
+
     global moves
 
-    global tower1_pos_x
-    global tower2_pos_y
-    global tower3_pos_y
-
-    global index
     global index_l
-  
-    global th_1
-    global th_2
-    global th_3
 
     global count_t1
     global count_t2
@@ -229,27 +277,30 @@ def move_disk():
 
     global chosen_num
 
+    # x position of the towers
+
     t1_x = tower1_pos_x 
     t2_x = tower2_pos_x
     t3_x = tower3_pos_x
+
+    # Initial x position of the disks
 
     th_1 = 325 - 20*chosen_num
     th_2 = 325
     th_3 = 325
 
-
     # Centers the disk at a tower
-    
-    # for i in range(len(disks)):
+   
     if index_l < len(moves_list):
        
         p = int((moves_list[index_l][0])) - 1
+
         p1 = (moves_list)[index_l][index_l1]
 
         pos_x, pos_y = disks[p][0].center
 
+        # Conditions for wrap around
         
-
         if pos_x == t1_x:
             
             wraparound = 1
@@ -262,9 +313,11 @@ def move_disk():
             
             wraparound = 2
 
-        if p1 == 'left' and wraparound == 1:
+        # Conditions to determine which direction to move the disks based on
+        # instruction and wrap around conditions
 
-            
+        if p1 == 'left' and wraparound == 1:
+ 
             if count_t3 == 0:
 
                 disks[p][0].center = (tower3_pos_x, th_3)
@@ -273,119 +326,78 @@ def move_disk():
 
                 disks[p][0].center = (tower3_pos_x, th_3 - 20*count_t3)
 
-                
             count_t1 -= 1
             count_t3 += 1
 
         if p1 == 'left' and wraparound == 0:
 
-            
-            
             if count_t1 == 0:
 
                 disks[p][0].center = (tower1_pos_x, th_1)
             
-            
             else:
-
                 
                 disks[p][0].center = (tower1_pos_x, th_1 - 20*count_t1)
-                
-                
-
+                 
             count_t2 -= 1
             count_t1 += 1
            
-
         if p1 == 'left' and wraparound == 2:
 
-            
-            
-
             if count_t2 == 0:
-
 
                 disks[p][0].center = (tower2_pos_x, th_2)
                
-
             else:
-
                 
                 disks[p][0].center = (tower2_pos_x, th_2 - 20*count_t2)
                 
-
             count_t3 -= 1
             count_t2 += 1
-            
 
         if p1 == 'right' and wraparound == 1:
 
-           
-
             if count_t2 == 0:
                 
-
                 disks[p][0].center = (tower2_pos_x, th_2)
 
-
             else:
-
-                
-                
-                disks[p][0].center = (tower2_pos_x, th_2 - 20*count_t2)
-                
+ 
+                disks[p][0].center = (tower2_pos_x, th_2 - 20*count_t2)  
             
             count_t1 -= 1
             count_t2 += 1
-            
 
         if p1 == 'right' and wraparound == 0:
 
-            
-            
-
             if count_t3 == 0:
 
-                
                 disks[p][0].center = (tower3_pos_x, th_3)
             
-
             else:
-
-                
                 
                 disks[p][0].center = (tower3_pos_x, th_3 - 20*count_t3)
-                
-
-            
+                    
             count_t2 -= 1
             count_t3 += 1
-            
 
         if p1 == 'right' and wraparound == 2:
 
-            
-            
-
             if count_t1 == 0:
                 
-
                 disks[p][0].center = (tower1_pos_x, th_1)
                 
-
-
             else:
-
                 
                 disks[p][0].center = (tower1_pos_x, th_1 - 20*count_t1)
-            
-                
+              
             count_t3 -= 1
             count_t1 += 1
             
         moves += 1
         index_l += 1
 
+# Initially the game is paused
 
 draw_moves = False        
         
@@ -402,8 +414,13 @@ while True:
             exit()
 
         if game_active:
+
             if event.type == pygame.KEYDOWN:
+
                 if event.key == pygame.K_SPACE:
+                    
+                    # Starts/stops the game
+
                     draw_moves = not draw_moves
         
         if event.type == pygame.MOUSEBUTTONDOWN:          
@@ -418,7 +435,6 @@ while True:
                         choose_active = False
                         speed_active = True
                         moves_printout(chosen_num)
-                        print(moves_list)
                         create_disks()
                         disks.reverse()    
                         num_rect.clear()            
@@ -430,58 +446,60 @@ while True:
 
                 for i in range(len(num_rect)):
 
+                    # Checks if the mouse clicks collides with any of the numbers
+
                     if num_rect[i].collidepoint(event.pos):
                         chosen_speed = i+1
                         speed_active = False
                         game_active = True
-                        frames_per_second = 10*chosen_speed
-                                       
+                        frames_per_second = 10*chosen_speed        
                         break
                     else:
-                        speed_active = True
-
-        
-                    
+                        speed_active = True  
 
     # Events for keys
         
-        if not game_active:
+        # Event to start the game 
+
+        if not game_active and not speed_active:
             screen.fill((94, 129, 162))
             display_intro()
-
+    
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_SPACE:
                     choose_active = True
 
+    if game_active:
 
+        # Adds captions at the top of the window 
 
-    if game_active and not draw_moves:
-        
+        caption = 'Towers of Hanoi          '
+        caption += '(1)  \'Space\' to start or pause    '
+
+        pygame.display.set_caption(caption)
+
         screen.blit(bg, (0,0))
 
         num_surf = test_font.render('Moves: ' + f'{moves}', True, (64,64,64))
-        num_rect = num_surf.get_rect(center = (400, 50))
+        num_rect = num_surf.get_rect(center = (400, 50)
+                                     )
         screen.blit(num_surf, num_rect)
-
-        # pygame.draw.rect(screen, '')
         
         screen.blit(board_surf, board_rect)
+
         screen.blit(tower1_surf, tower1_rect)
         screen.blit(tower2_surf, tower2_rect)
         screen.blit(tower3_surf, tower3_rect)
-       
+
+        draw_disks()
         
+    # Allows the animation to be paused/unpaused
+
+    if game_active and draw_moves:
         draw_disks()
         move_disk()
         
-        # Get coordinates based on where your mouse is
-
-        mouse_pos = pygame.mouse.get_pos()
-        pos_surf = test_font.render('Pos: ' + f'{mouse_pos}', False, (64,64,64))
-        pos_rect = pos_surf.get_rect(center = (400,350))
-
-        if event.type == pygame.MOUSEMOTION:
-            screen.blit(pos_surf, pos_rect)
+    # Displays the choices on choose and speed screen
 
     if choose_active:
 
@@ -495,6 +513,8 @@ while True:
         speed_screen()
         choose_speed()
 
+    # Constant update of animations
+
     pygame.display.update()
 
     # Sets the framerate for the game
@@ -502,17 +522,4 @@ while True:
     clock.tick(frames_per_second)
 
         
-        
-
-
-        
-            
-        
-
-
-
-
-
-            
-
-
+    

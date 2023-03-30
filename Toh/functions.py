@@ -29,51 +29,6 @@ def moves(n, left):
     
 
 
-    
-
-
-
-# def moves_printout():
-
-#     ''' This function displays a printout of the sequence of 
-#     configurations of a solution to the problem for n discs
-#     '''
-
-#     # Checks for input errors
-
-#     while True:
-#         try:
-
-#             n = int(input("Enter the number of discs: "))
-
-#         except ValueError:
-
-#             print("You must enter a number")
-#             continue
-        
-#         else:
-            
-#             break
-
-#     while True:
-
-#         left = input("Enter left or right: ")
-
-#         if left.lower() == "left":
-#             left = True
-#             break
-
-#         elif left.lower() == 'right':
-#             left = False
-#             break
-
-#     moves(n, left)
-
-#     # Printout of a sequence of moves to solve the Towers of Hanoi
-
-#     for i in range(len(moves_list)):
-#         print(moves_list[i])
-
 def moves_printout(n):
 
     ''' This function displays a printout of the sequence of 
@@ -87,6 +42,4 @@ def moves_printout(n):
 
     # Printout of a sequence of moves to solve the Towers of Hanoi
 
-    for i in range(len(moves_list)):
-        print(moves_list[i])
 
