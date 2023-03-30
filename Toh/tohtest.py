@@ -88,12 +88,14 @@ def display_intro():
 
     game_title = test_font.render('Towers of Hanoi', False, (64,64,64))
     game_title_rect = game_title.get_rect(center = (400,50))
+    
     screen.blit(game_title, game_title_rect)
 
     # Displays instruction to play the game
 
     instructions = test_font.render('Press Spacebar to play', False, (64,64,64))
     instructions_rect = instructions.get_rect(center = (400, 300))
+    
     screen.blit(instructions, instructions_rect)
 
     return None
@@ -116,12 +118,14 @@ def choose_disks():
             choose_rect = choose_surf.get_rect(center = (x,y))
 
             if len(num_rect) < 17:
+
                 num_rect.append(choose_rect)
 
             screen.blit(choose_surf, choose_rect)
 
             y += 60
             count_x += 1
+
         else:
 
             choose_surf = test_font.render(numbers, False, (64,64,64))
@@ -171,6 +175,7 @@ def choose_speed():
     for numbers in speed:
 
         if count_x < 3:
+
             speed_surf = test_font.render(numbers, False, (64,64,64))
             speed_rect = speed_surf.get_rect(center = (x,y))
 
@@ -434,15 +439,22 @@ while True:
                     # Checks if the mouse clicks collides with any of the numbers
 
                     if num_rect[i].collidepoint(event.pos):
+
                         chosen_num = i+1
+
                         choose_active = False
                         speed_active = True
+
                         moves_printout(chosen_num)
                         create_disks()
+
                         disks.reverse()    
-                        num_rect.clear()            
+                        num_rect.clear()     
+
                         break
+
                     else:
+
                         choose_active = True
                         
             if speed_active:
@@ -452,12 +464,20 @@ while True:
                     # Checks if the mouse clicks collides with any of the numbers
 
                     if num_rect[i].collidepoint(event.pos):
+
                         chosen_speed = i+1
+
                         speed_active = False
                         game_active = True
-                        frames_per_second = 10*chosen_speed        
+
+                        # Changes the speed of the animation according the the user's choice
+
+                        frames_per_second = 10*chosen_speed
+
                         break
+                    
                     else:
+
                         speed_active = True  
 
     # Events for keys
