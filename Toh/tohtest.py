@@ -16,7 +16,7 @@ choose_active = False
 speed_active = False
 start_time = 0
 moves = 0
-frames_per_second = 10 + 10*2
+frames_per_second = 10
 
 # Timer
 
@@ -78,6 +78,7 @@ def choose_disks():
     for numbers in disks_num:
 
         if count_x < 3:
+
             choose_surf = test_font.render(numbers, False, (64,64,64))
             choose_rect = choose_surf.get_rect(center = (x,y))
 
@@ -108,7 +109,7 @@ def choose_screen():
     screen.blit(choose_title, choose_title_rect)
 
 
-speed = [i for i in range(1,11)]
+speed = [str(i) for i in range(1,11)]
 
 speed_rect = []
 
@@ -204,6 +205,8 @@ count_t3 = 0
 
 
 def move_disk():
+    
+    global moves
 
     global tower1_pos_x
     global tower2_pos_y
@@ -376,7 +379,7 @@ def move_disk():
             count_t3 -= 1
             count_t1 += 1
             
-
+        moves += 1
         index_l += 1
 
 
@@ -416,14 +419,14 @@ while True:
                         
             if speed_active:
 
-                for i in range(len(speed_rect)):
+                for i in range(len(num_rect)):
 
-                    if speed_rect[i].collidepoint(event.pos):
+                    if num_rect[i].collidepoint(event.pos):
                         chosen_speed = i+1
                         speed_active = False
                         game_active = True
-                        moves_printout(chosen_num)
-                        create_disks()                
+                        frames_per_second = 10 + 10*chosen_speed
+                                       
                         break
                     else:
                         speed_active = True
@@ -460,7 +463,7 @@ while True:
         
         screen.blit(bg, (0,0))
 
-        num_surf = test_font.render('Number of disks: ' + f'{chosen_num}', True, (64,64,64))
+        num_surf = test_font.render('Moves: ' + f'{moves}', True, (64,64,64))
         num_rect = num_surf.get_rect(center = (400, 50))
         screen.blit(num_surf, num_rect)
 
@@ -513,7 +516,7 @@ while True:
 
     # Sets the framerate for the game
 
-    clock.tick(10)
+    clock.tick(frames_per_second)
 
             
 
