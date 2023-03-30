@@ -1,10 +1,12 @@
 # Imports
 
 import pygame
-import sys
+
+# Imports Towers of Hanoi functions from Question 4
+
 from functions import *
 
-# Basic setup
+# Basic setup 
 
 pygame.init()
 
@@ -401,7 +403,6 @@ def move_disk():
 
 draw_moves = False        
         
-
 while True:
 
     # The user's choice of number of disks
