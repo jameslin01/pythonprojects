@@ -126,8 +126,8 @@ def choose_speed():
             speed_surf = test_font.render(numbers, False, (64,64,64))
             speed_rect = speed_surf.get_rect(center = (x,y))
 
-            if len(speed_rect) < 11:
-                speed_rect.append(choose_rect)
+            if len(num_rect) < 11:
+                num_rect.append(speed_rect)
 
             screen.blit(speed_surf, speed_rect)
             y += 60
@@ -137,8 +137,8 @@ def choose_speed():
             speed_surf = test_font.render(numbers, False, (64,64,64))
             speed_rect = speed_surf.get_rect(center = (x,y))
 
-            if len(speed_rect) < 17:
-                speed_rect.append(speed_rect)
+            if len(num_rect) < 11:
+                num_rect.append(speed_rect)
             screen.blit(speed_surf, speed_rect)
             count_x = 0
             x += 200
@@ -408,7 +408,8 @@ while True:
                         moves_printout(chosen_num)
                         print(moves_list)
                         create_disks()
-                        disks.reverse()                
+                        disks.reverse()    
+                        num_rect.clear()            
                         break
                     else:
                         choose_active = True
@@ -493,6 +494,7 @@ while True:
 
         screen.fill((94, 129, 162))
         speed_screen()
+        choose_speed()
 
 
 
