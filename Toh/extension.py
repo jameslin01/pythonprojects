@@ -35,8 +35,8 @@ moves = 0
 
 frames_per_second = 10
 
-bg = pygame.image.load('Toh/tohgraphics/bg.jpeg')
-# bg = pygame.image.load('tohgraphics/bg.jpeg')
+# bg = pygame.image.load('Toh/tohgraphics/bg.jpeg')
+bg = pygame.image.load('tohgraphics/bg.jpeg')
 
 # bg = pygame.image.load('Toh/tohgraphics/bg.jpeg')
 # bg = pygame.image.load('tohgraphics/bg.jpeg')
@@ -244,7 +244,7 @@ def create_disks():
 
         if len(disks) < chosen_num:
 
-            disks.append([rect, colours[count]])
+            disks.append([rect, colours[count], 1])
 
             width -=10
             disk_rect_y -=20
@@ -255,7 +255,7 @@ def draw_disks():
 
     '''Function that draws the rectangles on the screen'''
 
-    for (disk, colour) in disks:
+    for (disk, colour, wraparound) in disks:
 
         pygame.draw.rect(screen, colour, disk)
 
@@ -312,15 +312,15 @@ def move_disk():
         
         if pos_x == t1_x:
             
-            disks[p].insert(2, 1)
+            disks[p][2] = 1
 
         if pos_x == t2_x:
             
-            disks[p].insert(2, 0)
+            disks[p][2] = 0
 
         if pos_x == t3_x:
             
-            disks[p].insert(2, 2)
+            disks[p][2] = 2
 
         pos = disks[p][2]
 
