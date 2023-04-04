@@ -337,12 +337,12 @@ def move_disk():
 
             if count_t3 == 0:
 
-                if x <= tower3_pos_x:
+                # if x <= tower3_pos_x:
 
-                    disks[p][0].x += 5
-                    disks[p][0].y += 0.2
+                #     disks[p][0].x += 100
+                #     disks[p][0].y += 0.2
                     
-                # disks[p][0].center = (tower3_pos_x, th_3)
+                disks[p][0].center = (tower3_pos_x, th_3)
                     
                 # disks[p][0].center = (tower3_pos_x, th_3)
 
