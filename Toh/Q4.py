@@ -38,7 +38,7 @@ frames_per_second = 10
 # bg = pygame.image.load('Toh/tohgraphics/bg.jpeg')
 bg = pygame.image.load('tohgraphics/bg.jpeg')
 
-bg = pygame.image.load('Toh/tohgraphics/bg.jpeg')
+# bg = pygame.image.load('Toh/tohgraphics/bg.jpeg')
 # bg = pygame.image.load('tohgraphics/bg.jpeg')
 bg = pygame.transform.scale(bg, (800,400))
 
@@ -328,7 +328,7 @@ def move_disk():
         if p1 == 'left' and wraparound == 1:
  
             if count_t3 == 0:
-
+                
                 disks[p][0].center = (tower3_pos_x, th_3)
 
             else:
@@ -472,7 +472,7 @@ while True:
 
                         # Changes the speed of the animation according the the user's choice
 
-                        frames_per_second = 10*chosen_speed
+                        frames_per_second = 5*chosen_speed
 
                         break
                     
