@@ -190,9 +190,13 @@ towerofhanoi(n, 'A', 'C', 'B')'''
 # n = 9
 # TowerOfHanoi(n,'A','B','C')
 
-l = [[1,2],[3,4]]
+# l = [[1,2],[3,4]]
 
-if l[0][0] == [1,2]:
-    print('yes')
-else:
-    print('no')
+# if l[0][0] == [1,2]:
+#     print('yes')
+# else:
+#     print('no')
+
+data = [[1,2], [3,4]]
+data[0].insert(2, 5)
+print(data[0][2])
