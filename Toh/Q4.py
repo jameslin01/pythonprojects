@@ -36,7 +36,7 @@ moves = 0
 frames_per_second = 10
 
 # bg = pygame.image.load('Toh/tohgraphics/bg.jpeg')
-bg = pygame.image.load('tohgraphics/bg.jpeg')
+# bg = pygame.image.load('tohgraphics/bg.jpeg')
 
 # bg = pygame.image.load('Toh/tohgraphics/bg.jpeg')
 # bg = pygame.image.load('tohgraphics/bg.jpeg')
