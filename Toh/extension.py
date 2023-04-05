@@ -395,8 +395,6 @@ def move_disk():
 
             count_t1 -= 1
             count_t3 += 1
-          
-    
 
         if p1 == 'left' and pos == 0:
 
@@ -423,8 +421,6 @@ def move_disk():
             count_t2 -= 1
             count_t1 += 1
     
-            
-           
         if p1 == 'left' and pos == 2:
 
             if count_t2 == 0:
@@ -449,14 +445,10 @@ def move_disk():
                 
             count_t3 -= 1
             count_t2 += 1
-     
-    
 
         if p1 == 'right' and pos == 1:
 
             if count_t2 == 0:
-
-                
 
                 dx = tower2_pos_x - pos_x
 
@@ -478,8 +470,6 @@ def move_disk():
             
             count_t1 -= 1
             count_t2 += 1
-     
-            
 
         if p1 == 'right' and pos == 0:
 
@@ -627,7 +617,6 @@ while True:
 
         pygame.display.set_caption(caption)
 
-        # screen.blit(bg, (0,0))
         screen.fill((100,25,60))
 
         num_surf = test_font.render('Moves: ' + f'{moves}', True, (200,200,200))
@@ -642,8 +631,6 @@ while True:
         screen.blit(tower3_surf, tower3_rect)
 
         draw_disks()
-        
-        # pygame.draw.rect(screen, 'blue', disks[ind][0])
         
     # Allows the animation to be paused/unpaused
 
