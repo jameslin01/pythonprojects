@@ -272,6 +272,22 @@ count_t1 = len(disks)
 count_t2 = 0
 count_t3 = 0
 
+
+def update_object(index, fx, fy):
+    
+    rectx, recty = disks[index][0].center
+
+    pygame.draw.rect(screen, disks[index][1], disks[index][0])
+
+    if rectx != fx:
+        
+        disks[index][0].centerx += 1
+ 
+    if recty != fy:
+
+        disks[index][0].centery += 1
+        
+
 def move_disk():
     
     '''Function that creates the animation of the moving disks'''
@@ -328,98 +344,119 @@ def move_disk():
         # instruction and wrap around conditions
 
         if p1 == 'left' and pos == 1:
-
-            run = True
-
-            x, y = disks[p][0].center
             
-
+            # gradx = tower3_pos_x - pos_x
+            # grady = th_3 - pos_y
 
             if count_t3 == 0:
 
-                # if x <= tower3_pos_x:
-
-                #     disks[p][0].x += 100
-                #     disks[p][0].y += 0.2
+                update_object(p, tower3_pos_x, th_3)
                     
-                disks[p][0].center = (tower3_pos_x, th_3)
+                # disks[p][0].center = (tower3_pos_x, th_3)
                     
                 # disks[p][0].center = (tower3_pos_x, th_3)
 
             else:
 
-                disks[p][0].center = (tower3_pos_x, th_3 - 20*count_t3)
+                update_object(p, tower3_pos_x, th_3 - 20*count_t3)
+
+                # disks[p][0].center = (tower3_pos_x, th_3 - 20*count_t3)
+
 
             count_t1 -= 1
             count_t3 += 1
+    
 
         if p1 == 'left' and pos == 0:
 
             if count_t1 == 0:
 
-                disks[p][0].center = (tower1_pos_x, th_1)
+                update_object(p, tower1_pos_x, th_1)
+
+                # disks[p][0].center = (tower1_pos_x, th_1)
             
             else:
                 
-                disks[p][0].center = (tower1_pos_x, th_1 - 20*count_t1)
+                update_object(p, tower1_pos_x, th_1 - 20*count_t1)
+
+                # disks[p][0].center = (tower1_pos_x, th_1 - 20*count_t1)
                  
             count_t2 -= 1
             count_t1 += 1
+            
            
         if p1 == 'left' and pos == 2:
 
             if count_t2 == 0:
 
-                disks[p][0].center = (tower2_pos_x, th_2)
+                update_object(p, tower2_pos_x, th_2)
+
+                # disks[p][0].center = (tower2_pos_x, th_2)
                
             else:
+
+                update_object(p, tower2_pos_x, th_2 - 20*count_t2)
                 
-                disks[p][0].center = (tower2_pos_x, th_2 - 20*count_t2)
+                # disks[p][0].center = (tower2_pos_x, th_2 - 20*count_t2)
                 
             count_t3 -= 1
             count_t2 += 1
+            
 
         if p1 == 'right' and pos == 1:
 
             if count_t2 == 0:
+
+                update_object(p, tower2_pos_x, th_2)
                 
-                disks[p][0].center = (tower2_pos_x, th_2)
+                # disks[p][0].center = (tower2_pos_x, th_2)
 
             else:
+
+                update_object(p, tower2_pos_x, th_2 - 20*count_t2)
  
-                disks[p][0].center = (tower2_pos_x, th_2 - 20*count_t2)  
+                # disks[p][0].center = (tower2_pos_x, th_2 - 20*count_t2)  
             
             count_t1 -= 1
             count_t2 += 1
+            
 
         if p1 == 'right' and pos == 0:
 
             if count_t3 == 0:
 
-                disks[p][0].center = (tower3_pos_x, th_3)
+                update_object(p, tower3_pos_x, th_3)
+
+                # disks[p][0].center = (tower3_pos_x, th_3)
             
             else:
+
+                update_object(p, tower3_pos_x, th_3 - 20*count_t3)
                 
-                disks[p][0].center = (tower3_pos_x, th_3 - 20*count_t3)
+                # disks[p][0].center = (tower3_pos_x, th_3 - 20*count_t3)
                     
             count_t2 -= 1
             count_t3 += 1
+            
 
         if p1 == 'right' and pos == 2:
 
             if count_t1 == 0:
+
+                update_object(p, tower1_pos_x, th_1)
                 
-                disks[p][0].center = (tower1_pos_x, th_1)
+                # disks[p][0].center = (tower1_pos_x, th_1)
                 
             else:
+
+                update_object(p, tower1_pos_x, th_1 - 20*count_t1)
                 
-                disks[p][0].center = (tower1_pos_x, th_1 - 20*count_t1)
+                # disks[p][0].center = (tower1_pos_x, th_1 - 20*count_t1)
               
             count_t3 -= 1
             count_t1 += 1
             
-        moves += 1
-        index_l += 1
+            
 
 # Initially the game is paused
 
@@ -531,11 +568,17 @@ while True:
 
         draw_disks()
         
+        # pygame.draw.rect(screen, 'blue', disks[ind][0])
+        
     # Allows the animation to be paused/unpaused
 
     if game_active and draw_moves:
+
         draw_disks()
+
         move_disk()
+
+        # update_object(0, tower2_pos_x, 325)
         
     # Displays the choices on choose and speed screen
 
