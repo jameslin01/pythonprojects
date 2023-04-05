@@ -26,6 +26,7 @@ test_font = pygame.font.Font(None, 50)
 game_active = False
 choose_active = False
 speed_active = False
+changed = True
 
 # Initial number of moves
 
@@ -276,10 +277,15 @@ count_t3 = 0
 def update_object(index, fx, fy, dx, dy):
 
     
+    global pos_x
+
+    global pos_y
 
     global index_l
 
     global moves
+
+    global changed
 
     (rectx, recty) = disks[index][0].center
 
@@ -287,22 +293,36 @@ def update_object(index, fx, fy, dx, dy):
 
     # if rectx <= fx and recty <= fy:
 
-    done = False
+
+    stepx = 0.1*dx
+    stepy = 0.1*dy
+   
+
 
     if index_l < len(moves_list):
+        
+        if disks[index][0].centerx <= fx:
 
+            disks[index][0].centerx = rectx + stepx
+            disks[index][0].centery = recty + stepy
 
+            
 
-        disks[index][0].center = (fx, fy)
-        done = True
+        # disks[index][0].center = (stepx, stepy)
 
-        # disks[index][0].center = rectx += 1, recty += 2
-    
-        if done:
+        if disks[index][0].center == (fx, fy):
 
             index_l += 1
             moves += 1
-            done = False
+            changed = True
+
+        # disks[index][0].center = (fx, fy)
+
+        # disks[index][0].center = rectx += 1, recty += 2
+
+            
+        
+
     # if recty <= fy:
 
     #     disks[index][0].centery += 0.5*dy
@@ -335,6 +355,9 @@ def move_disk():
     global dx
     global dy
 
+    global pos_x
+    global pos_y
+
     # x position of the towers
 
     t1_x = tower1_pos_x 
@@ -348,6 +371,7 @@ def move_disk():
     th_3 = 325
 
     # Centers the disk at a tower
+
    
     if index_l < len(moves_list):
        
@@ -383,19 +407,19 @@ def move_disk():
 
             if count_t3 == 0:
 
+                
+
                 dx = tower3_pos_x - pos_x
 
                 dy = th_3 - pos_y
 
                 fx = tower3_pos_x
 
-                fy = th_3
-                    
-                # disks[p][0].center = (tower3_pos_x, th_3)
-                    
-                # disks[p][0].center = (tower3_pos_x, th_3)
+                fy = th_3       
 
             else:
+
+                
 
                 dx = tower3_pos_x - pos_x
 
@@ -417,6 +441,8 @@ def move_disk():
 
             if count_t1 == 0:
 
+                
+
                 dx = tower1_pos_x - pos_x
 
                 dy = th_1 - pos_y
@@ -428,6 +454,8 @@ def move_disk():
                 # disks[p][0].center = (tower1_pos_x, th_1)
             
             else:
+
+                
 
                 dx = tower1_pos_x - pos_x
 
@@ -448,6 +476,8 @@ def move_disk():
 
             if count_t2 == 0:
 
+                
+
                 dx = tower2_pos_x - pos_x
 
                 dy = th_2 - pos_y
@@ -459,6 +489,8 @@ def move_disk():
                 # disks[p][0].center = (tower2_pos_x, th_2)
                
             else:
+
+                
 
                 dx = tower2_pos_x - pos_x
 
@@ -480,6 +512,8 @@ def move_disk():
 
             if count_t2 == 0:
 
+                
+
                 dx = tower2_pos_x - pos_x
 
                 dy = th_2 - pos_y
@@ -487,10 +521,12 @@ def move_disk():
                 fx = tower2_pos_x
                 
                 fy = th_2
-                
+                    
                 # disks[p][0].center = (tower2_pos_x, th_2)
 
             else:
+
+               
 
                 dx = tower2_pos_x - pos_x
 
@@ -499,7 +535,7 @@ def move_disk():
                 fx = tower2_pos_x
 
                 fy = th_2 - 20*count_t2
- 
+
                 # disks[p][0].center = (tower2_pos_x, th_2 - 20*count_t2)  
             
             count_t1 -= 1
@@ -510,6 +546,7 @@ def move_disk():
         if p1 == 'right' and pos == 0:
 
             if count_t3 == 0:
+
 
                 dx = tower3_pos_x - pos_x
 
@@ -542,6 +579,8 @@ def move_disk():
 
             if count_t1 == 0:
 
+                
+
                 dx = tower1_pos_x - pos_x
 
                 dy = th_1 - pos_y
@@ -554,6 +593,8 @@ def move_disk():
                 
             else:
 
+                
+
                 dx = tower1_pos_x - pos_x
 
                 dy = th_1 - 20*count_t1 - pos_y
@@ -561,7 +602,7 @@ def move_disk():
                 fx = tower1_pos_x
 
                 fy = th_1 - 20*count_t1
-                
+                    
                 # disks[p][0].center = (tower1_pos_x, th_1 - 20*count_t1)
               
             count_t3 -= 1
@@ -689,7 +730,10 @@ while True:
 
         draw_disks()
 
-        move_disk()
+        if changed:
+
+            move_disk()
+            changed = False
 
         update_object(p, fx, fy, dx, dy)
         
