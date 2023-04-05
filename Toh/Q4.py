@@ -35,13 +35,6 @@ moves = 0
 
 frames_per_second = 10
 
-# bg = pygame.image.load('Toh/tohgraphics/bg.jpeg')
-bg = pygame.image.load('tohgraphics/bg.jpeg')
-
-# bg = pygame.image.load('Toh/tohgraphics/bg.jpeg')
-# bg = pygame.image.load('tohgraphics/bg.jpeg')
-bg = pygame.transform.scale(bg, (800,400))
-
 # Creates the board for the towers
 
 board_surf = pygame.Surface((720,25))
@@ -501,9 +494,9 @@ while True:
 
         pygame.display.set_caption(caption)
 
-        screen.blit(bg, (0,0))
+        screen.fill((100,25,60))
 
-        num_surf = test_font.render('Moves: ' + f'{moves}', True, (64,64,64))
+        num_surf = test_font.render('Moves: ' + f'{moves}', True, (200,200,200))
         num_rect = num_surf.get_rect(center = (400, 50)
                                      )
         screen.blit(num_surf, num_rect)

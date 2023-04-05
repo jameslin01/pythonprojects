@@ -326,9 +326,6 @@ def move_disk():
     global dx
     global dy
 
-    global pos_x
-    global pos_y
-
     # x position of the towers
 
     t1_x = tower1_pos_x 
