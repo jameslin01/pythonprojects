@@ -266,32 +266,25 @@ count_t1 = len(disks)
 count_t2 = 0
 count_t3 = 0
 
-
 def update_object(index, fx, fy, dx, dy):
 
     '''Function that updates each frame of the disks for a smoother transition'''
     
-    global pos_x
-
-    global pos_y
-
     global index_l
 
     global moves
 
     global changed
 
-    (rectx, recty) = disks[index][0].center
+    (rect_x, rect_y) = disks[index][0].center
 
     pygame.draw.rect(screen, disks[index][1], disks[index][0])
 
     # Small increments of steps in direction of the destination
 
-    stepx = 0.05*dx
+    step_x = 0.05*dx
     
-    stepy = 0.05*dy
-   
-
+    step_y = 0.05*dy
 
     if index_l < len(moves_list):
 
@@ -299,11 +292,11 @@ def update_object(index, fx, fy, dx, dy):
         
         if disks[index][0].centerx != fx:
             
-            disks[index][0].centerx = rectx + stepx
+            disks[index][0].centerx = rect_x + step_x
 
         if disks[index][0].centery != fy:
 
-            disks[index][0].centery = recty + stepy
+            disks[index][0].centery = rect_y + step_y
 
         # Once the disk has reached its destination we move on to the next disk and increment the number of moves
 
@@ -526,11 +519,7 @@ def move_disk():
 
                 fy = th_1
 
-                # disks[p][0].center = (tower1_pos_x, th_1)
-                
             else:
-
-                
 
                 dx = tower1_pos_x - pos_x
 
@@ -539,14 +528,9 @@ def move_disk():
                 fx = tower1_pos_x
 
                 fy = th_1 - 20*count_t1
-                    
-                # disks[p][0].center = (tower1_pos_x, th_1 - 20*count_t1)
               
             count_t3 -= 1
             count_t1 += 1
-      
-
-            
 
 # Initially the game is paused
 
@@ -614,7 +598,7 @@ while True:
 
                         # Changes the speed of the animation according the the user's choice
 
-                        frames_per_second = 5*chosen_speed
+                        frames_per_second = 10*chosen_speed
 
                         break
                     
