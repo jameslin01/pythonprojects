@@ -275,7 +275,10 @@ count_t3 = 0
 
 def update_object(index, fx, fy, dx, dy):
 
+    
+
     global index_l
+
     global moves
 
     (rectx, recty) = disks[index][0].center
@@ -283,12 +286,23 @@ def update_object(index, fx, fy, dx, dy):
     pygame.draw.rect(screen, disks[index][1], disks[index][0])
 
     # if rectx <= fx and recty <= fy:
-    
+
+    done = False
+
     if index_l < len(moves_list):
 
+
+
         disks[index][0].center = (fx, fy)
-        index_l += 1
-        moves += 1
+        done = True
+
+        # disks[index][0].center = rectx += 1, recty += 2
+    
+        if done:
+
+            index_l += 1
+            moves += 1
+            done = False
     # if recty <= fy:
 
     #     disks[index][0].centery += 0.5*dy
