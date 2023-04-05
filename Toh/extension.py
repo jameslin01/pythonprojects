@@ -284,8 +284,8 @@ def update_object(index, fx, fy, dx, dy):
 
     # if rectx <= fx and recty <= fy:
     
-    if index < len(moves_list):
-        
+    if index_l < len(moves_list):
+
         disks[index][0].center = (fx, fy)
         index_l += 1
         moves += 1
