@@ -27,6 +27,7 @@ game_active = False
 choose_active = False
 speed_active = False
 changed = True
+wait = False
 
 # Initial number of moves
 
@@ -275,6 +276,8 @@ def update_object(index, fx, fy, dx, dy):
     global moves
 
     global changed
+    
+    global wait
 
     (rect_x, rect_y) = disks[index][0].center
 
@@ -305,10 +308,13 @@ def update_object(index, fx, fy, dx, dy):
             index_l += 1
             moves += 1
             changed = True
+
+            
+            
    
 def move_disk():
     
-    '''Function that creates the animation of the moving disks'''
+    '''Function that provides the foundation for the movement of disks'''
 
     global moves
 
@@ -529,6 +535,13 @@ while True:
 
     # Events
 
+    # Delays the time between each move
+
+    if wait:
+
+        pygame.time.delay(500)
+        wait = False
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -639,6 +652,8 @@ while True:
 
             move_disk()
             changed = False
+            wait = True
+
 
         update_object(p, fx, fy, dx, dy)
         
