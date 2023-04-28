@@ -539,7 +539,7 @@ while True:
 
     if wait:
 
-        pygame.time.delay(500)
+        pygame.time.delay(250)
         wait = False
 
     for event in pygame.event.get():
