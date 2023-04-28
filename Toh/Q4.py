@@ -179,6 +179,7 @@ def choose_speed():
 
             y += 60
             count_x += 1
+
         else:
 
             speed_surf = test_font.render(numbers, False, (64,64,64))
