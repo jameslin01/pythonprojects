@@ -12,3 +12,14 @@ def factorial(x):
 num = 3
 
 print("The factorial of",str(num), "is", factorial(num))
+
+def fact(x):
+
+    # Base case
+    if x < 2: # i.e. if x = 0 or x = 1
+        return 1
+    # Recursive case
+    else:
+        return x * fact(x-1)
+
+print(fact(3))
