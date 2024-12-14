@@ -1,10 +1,11 @@
 # import library from PyPi
-
+import os
+from dotenv import load_dotenv # helps to obtain API key from .env file
 import openai
 
 # set up api secret key from open ai
 
-openai.api_key = 'your_open_ai_key'
+openai.api_key = os.environ.get("API_KEY")
 
 def chat_with_gpt(prompt):
     response = openai.chat.completions.create(

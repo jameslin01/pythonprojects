@@ -1,5 +1,4 @@
-# load modules
-
+# import library from PyPi
 import os
 from dotenv import load_dotenv # helps to obtain API key from .env file
 from groq import Groq
@@ -42,7 +41,7 @@ while True:
     if user_input.lower() in ["quit", "stop", "bye"]:
 
         chat_history = [exit_prompt]
-
+        # use the openai api
         response = client.chat.completions.create(model = "llama3-70b-8192",
                                                   
                                                   messages = chat_history,
@@ -56,11 +55,11 @@ while True:
         break    
 
     response = client.chat.completions.create(model = "llama3-70b-8192",
-                                              
+                                              # a list of message parameters where each message is used to construct the dialogue or prompt for the model
                                               messages = chat_history,
-                                              
+                                              # maxinum number of tokens to generate in the completion
                                               max_tokens = 100,
-                                              
+                                              # controls randomness in output generation
                                               temperature = 1.2
     )
     
