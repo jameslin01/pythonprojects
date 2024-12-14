@@ -7,4 +7,6 @@
 #     username = input("Enter your username")
 #     password = input("Enter your password")
 
-17 % 15
+lol = "hi" + "hi"
+
+print(lol)

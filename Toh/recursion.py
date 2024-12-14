@@ -13,13 +13,27 @@ num = 3
 
 print("The factorial of",str(num), "is", factorial(num))
 
-def fact(x):
+def factorial(x):
 
     # Base case
-    if x < 2: # i.e. if x = 0 or x = 1
-        return 1
-    # Recursive case
-    else:
-        return x * fact(x-1)
 
-print(fact(3))
+    if x == 0:
+
+        return 1
+    
+    if x == 1:
+        return 1
+    
+    else:
+
+        return(x * factorial(x-1))
+
+def list_sum(num_List):
+    # Base case
+    if len(num_List) == 1:
+        return num_List[0]
+    else:
+        return num_List[0] + list_sum(num_List[1:])
+
+print(list_sum([1,2,3,4]))
+    
