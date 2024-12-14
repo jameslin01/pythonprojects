@@ -12,12 +12,11 @@ client = Groq(api_key = os.environ.get("GROQ_API_KEY"))
 
 # Set the system prompt to decide on the vibe of the chatbot
 
-choose_prompt = input("Choose the vibe for your bot")
+choose_prompt = input("Choose the vibe for your bot: ")
 
 system_prompt = {
     "role": "system",
-    "content":
-    choose_prompt
+    "content": choose_prompt
 }
 
 # set up the exit prompt to display the vibe of chatbot when you stop using it
