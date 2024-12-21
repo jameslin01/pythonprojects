@@ -59,7 +59,7 @@ while True:
                                               # a list of message parameters where each message is used to construct the dialogue or prompt for the model
                                               messages = chat_history,
                                               # maxinum number of tokens to generate in the completion
-                                              max_tokens = 100,
+                                              max_tokens = 1000,
                                               # controls randomness in output generation
                                               temperature = 1.2
     )
