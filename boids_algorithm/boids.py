@@ -62,7 +62,6 @@ scatter = axes.scatter(
     positions[0, :], positions[1, :], marker="o", edgecolors="k", lw = 0.5
 )
 scatter
-plt.show()
 
 # Update positions of boids in each timestep
 
@@ -94,11 +93,67 @@ move_to_middle_strength = 0.01
 
 # Update function to animate the central movement
 
+
+# Avoiding Collisions
+
+# Set up a matrix to give distances between each boid N x N
+
+positions = new_flock(4, np.array([100, 900]), np.array([200, 1100]))
+velocities = new_flock(4, np.array([0, -20]), np.array([10, 20]))
+
+xpos = positions[0, :]
+
+# Matrix of relative positions between boids
+
+xsep_matrix = xpos[:, np.newaxis] - xpos[np.newaxis, :]
+
+# 2 x N x N matrix of separations between x and y coordinates of the boids
+
+separations = positions[:, np.newaxis, :]
+
+# Squared displacements of boids
+
+squared_displacements = separations * separations
+
+square_distances = np.sum(squared_displacements, 0)
+
+# Find boids that are too close
+
+alert_distance = 2000
+close_boids = square_distances < alert_distance
+
+# Find direction distances only to those boids which are too close
+
+separation_if_close = np.copy(separations)
+far_away = np.logical_not(close_boids)
+
+# If they are far away set the x and y values in separation_if_close to 0
+
+separation_if_close[0, :, :][far_away] = 0
+separation_if_close[1, :, :][far_away] = 0
+
+# Fly away from them
+
+velocities = velocities + np.sum(separation_if_close, 2)
+
+# Update animation
+
 def update_boids(positions, velocities):
     move_to_middle_strength = 0.01
     middle = np.mean(positions, 1)
     direction_to_middle = positions - middle[:, np.newaxis]
     velocities -= direction_to_middle * move_to_middle_strength
+
+    separations = positions[:, np.newaxis, :] - positions[:, :, np.newaxis]
+    squared_displacements = separations * separations
+    square_distances = np.sum(squared_displacements, 0)
+    alert_distance = 100
+    far_away = square_distances > alert_distance
+    separations_if_close = np.copy(separations)
+    separations_if_close[0, :, :][far_away] = 0
+    separations_if_close[1, :, :][far_away] = 0
+    velocities += np.sum(separations_if_close, 1)
+
     positions += velocities
 
 def animate(frame):
@@ -110,4 +165,4 @@ anim = animation.FuncAnimation(figure, animate, frames = 50, interval = 50)
 positions = new_flock(100, np.array([100, 900]), np.array([200, 1100]))
 velocities = new_flock(100, np.array([0, -20]), np.array([10, 20]))
 HTML(anim.to_jshtml())
-anim.save("/Users/jamesjlin/Desktop/Projects/pythonprojects-1/boids_algorithm/boids_2.gif")
+anim.save("/Users/jamesjlin/Desktop/Projects/pythonprojects-1/boids_algorithm/boids_3.gif")
