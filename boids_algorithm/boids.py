@@ -153,16 +153,26 @@ def update_boids(positions, velocities):
     separations_if_close[0, :, :][far_away] = 0
     separations_if_close[1, :, :][far_away] = 0
     velocities += np.sum(separations_if_close, 1)
+    
+    # Match speeds with neigbours
 
+    velocity_differences = velocities[:, np.newaxis, :] - velocities[:, :, np.newaxis]
+    formation_flying_distance = 10000
+    formation_flying_strength = 0.125
+    very_far = square_distances > formation_flying_distance
+    velocity_differences_if_close = np.copy(velocity_differences)
+    velocity_differences_if_close[0, :, :][very_far] = 0
+    velocity_differences_if_close[1, :, :][very_far] = 0
+    velocities -= np.mean(velocity_differences_if_close, 1) * formation_flying_strength
     positions += velocities
 
 def animate(frame):
     update_boids(positions, velocities)
     scatter.set_offsets(positions.T)
 
-anim = animation.FuncAnimation(figure, animate, frames = 50, interval = 50)
+anim = animation.FuncAnimation(figure, animate, frames = 100, interval = 25)
 
-positions = new_flock(100, np.array([100, 900]), np.array([200, 1100]))
-velocities = new_flock(100, np.array([0, -20]), np.array([10, 20]))
+positions = new_flock(100, np.array([250, 1100]), np.array([500, 1500]))
+velocities = new_flock(100, np.array([0, -40]), np.array([10, 40]))
 HTML(anim.to_jshtml())
 anim.save("/Users/jamesjlin/Desktop/Projects/pythonprojects-1/boids_algorithm/boids_3.gif")
